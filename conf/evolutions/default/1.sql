@@ -12,8 +12,7 @@ create table AnswerRecord (
 
 create table question (
   id                        bigint not null auto_increment ,
-  correctAnswer             varchar(255),
-  wrongAnswers              varchar(255),
+  question_text             varchar(255),
   constraint pk_question primary key (id))
 ;
 
