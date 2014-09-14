@@ -6,7 +6,8 @@ version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   javaJdbc,
-  javaEbean,
+  javaJpa,
+  "org.hibernate" % "hibernate-entitymanager" % "4.3.6.Final",
   "mysql" % "mysql-connector-java" % "5.1.28",
   cache
 )
