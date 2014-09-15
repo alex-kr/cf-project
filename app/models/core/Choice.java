@@ -1,4 +1,4 @@
-package models;
+package models.core;
 
 import javax.persistence.*;
 
@@ -6,22 +6,19 @@ import javax.persistence.*;
  * Created by Victor Dichko on 14.09.14.
  */
 @Entity
-public class AnswerRecord {
+public class Choice {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long id;
-
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    public User user;
 
     @ManyToOne
     @JoinColumn(name="question_id")
     public Question question;
 
     @ManyToOne
-    @JoinColumn(name="choice_id")
-    public Choice choice;
+    @JoinColumn(name="choice_text_id")
+    public ChoiceText choiceText;
 
+    @Column(name="correct")
     public boolean correct;
 }

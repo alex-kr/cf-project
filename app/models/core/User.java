@@ -1,9 +1,6 @@
-package models;
+package models.core;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by Victor Dichko on 14.09.14.

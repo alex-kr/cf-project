@@ -1,4 +1,5 @@
-package models;
+package models.core;
+
 
 import javax.persistence.*;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
 @Entity
 public class Question {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public Long id;
 
     @Column(name="question_text")
