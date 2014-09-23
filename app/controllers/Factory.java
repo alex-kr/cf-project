@@ -1,7 +1,9 @@
 package controllers;
 
-import dao.impl.UserDAOImpl;
+import dao.ChoiceTextDAO;
 import dao.UserDAO;
+import dao.impl.ChoiceTextDAOImpl;
+import dao.impl.UserDAOImpl;
 
 /**
  * Created by Victor Dichko on 22.09.14.
@@ -9,6 +11,7 @@ import dao.UserDAO;
 public class Factory {
 
     private static UserDAO userDAO = null;
+    private static ChoiceTextDAO choiceTextDAO = null;
     private static Factory instance = null;
 
     public static synchronized Factory getInstance() {
@@ -23,5 +26,12 @@ public class Factory {
             userDAO = new UserDAOImpl();
         }
         return userDAO;
+    }
+
+    public ChoiceTextDAO getChoiceTextDAO() {
+        if (choiceTextDAO == null) {
+            choiceTextDAO = new ChoiceTextDAOImpl();
+        }
+        return choiceTextDAO;
     }
 }

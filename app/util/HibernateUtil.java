@@ -1,5 +1,6 @@
 package util;
 
+import models.core.ChoiceText;
 import models.core.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -18,6 +19,7 @@ public class HibernateUtil {
         try {
             Configuration config = new Configuration().configure();
             config.addAnnotatedClass(User.class);
+            config.addAnnotatedClass(ChoiceText.class);
             sessionFactory = config.buildSessionFactory();
         } catch (Throwable ex) {
             logger.error("Initial SessionFactory creation failed. " + ex);
