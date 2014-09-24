@@ -7,6 +7,7 @@ import javax.persistence.*;
  * Created by Victor Dichko on 14.09.14.
  */
 @Entity
+@Table(name = "answerrecord")
 public class AnswerRecord {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
