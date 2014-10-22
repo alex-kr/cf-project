@@ -1,6 +1,8 @@
 package models.core;
 
-
+import controllers.Factory;
+import dao.impl.*;
+import dao.impl.QuestionDAOImpl;
 import javax.persistence.*;
 
 /**
@@ -15,4 +17,12 @@ public class Question {
 
     @Column(name="question_text")
     public String questionText;
+
+    public void save() {
+    	try {
+			Factory.getInstance().getQuestionDAO().addQuestion(this);
+		} catch (Exception e) {
+			System.err.println("Smth wrong with saving question into DB");
+		}
+    }
 }

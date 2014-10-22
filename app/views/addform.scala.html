@@ -1,0 +1,18 @@
+@(questionList: List[models.core.Question], questionForm: Form[models.core.Question])
+@import helper._
+
+
+@main("Question form") {
+	<h1>Add new question:</h1>
+
+	@helper.form(action = routes.Questions.save()) {
+	<fieldset>
+		@helper.inputText(questionForm("questionText"), '_label -> "Question")
+	</fieldset>
+
+	<input type="submit" class="btn btn-primary">
+
+	}
+
+	@questions(questionList)
+}
