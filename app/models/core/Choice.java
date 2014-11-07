@@ -1,6 +1,10 @@
 package models.core;
 
+import controllers.Factory;
+import dao.impl.*;
+import dao.impl.ChoiceDAOImpl;
 import javax.persistence.*;
+
 
 /**
  * Created by Victor Dichko on 14.09.14.
@@ -22,4 +26,18 @@ public class Choice {
 
     @Column(name="correct")
     public boolean correct;
+
+    public Choice(Question question, ChoiceText choiceText, boolean correct) {
+        this.question = question;
+        this.choiceText = choiceText;
+        this.correct = correct;
+    } 
+
+    public void save() {
+        try {
+            Factory.getInstance().getChoiceDAO().addChoice(this);
+        } catch (Exception e) {
+            System.err.println("Smth wrong with saving choice into DB");
+        }
+    }
 }

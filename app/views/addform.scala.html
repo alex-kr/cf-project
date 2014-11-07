@@ -1,18 +1,42 @@
-@(questionList: List[models.core.Question], questionForm: Form[models.core.Question])
+@(questionList: List[models.core.Question], questionForm: Form[models.core.Question]
+										  , choicesForm: Form[controllers.helpers.ChoiceTextHolder])
 @import helper._
+@import helper.twitterBootstrap._
 
+<!-- Include the bootstrap stylesheets -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
 @main("Question form") {
-	<h1>Add new question:</h1>
 
-	@helper.form(action = routes.Questions.save()) {
-	<fieldset>
-		@helper.inputText(questionForm("questionText"), '_label -> "Question")
-	</fieldset>
+<div class="container" style="background-image: url(http://img1.wikia.nocookie.net/__cb20061003200043/uncyclopedia/images/4/44/White_square.png)">
 
-	<input type="submit" class="btn btn-primary">
+	<h2>Add new question:</h2>
 
-	}
+	@helper.form(action = routes.Questions.save(), 'class ->"form-horizontal") {
+		@helper.textarea(questionForm("questionText"),
+									  '_label -> "Question",
+									  'rows -> 3, 
+        							  'class -> "input-xxxlarge",
+        							  'placeholder -> "Enter question"
+    	)
+    	@helper.inputText(choicesForm("rightChoice"),
+    								  '_label -> "Right choice",
+    								  'size -> 30,
+    						  		  'placeholder -> "Enter choice")
+    	@helper.repeat(choicesForm("wrongChoice"), min = 3) { Field =>
+    		@helper.inputText(Field,
+    						  '_label -> "Wrong choice",
+    						  'size -> 30,
+    						  'placeholder -> "Enter choice")
+		}
 
+		<input type="submit" class="btn btn-primary" value="Submit">
+	}	
 	@questions(questionList)
+</div>
+
+
+	<script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
+   	<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+    <script src="http:/netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 }

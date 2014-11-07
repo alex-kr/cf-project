@@ -7,4 +7,4 @@ GET     /                          					 controllers.Application.index()
 
 # Questions
 GET 	/crud/questions/				 			 controllers.Questions.addQuestion()
-POST 	/crud/questions/save/			 controllers.Questions.save()
+POST 	/crud/questions/save/			 			 controllers.Questions.save()
