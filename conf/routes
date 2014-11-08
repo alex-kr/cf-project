@@ -7,7 +7,11 @@ GET     /                          					 controllers.Application.index()
 
 #Assets
 GET     /webjars/*file                    			 controllers.WebJarAssets.at(file)
+GET  	/assets/*file        					 	 controllers.Assets.at(path="/public",file)
 
 # Questions
 GET 	/crud/questions/				 			 controllers.Questions.addQuestion()
 POST 	/crud/questions/save/			 			 controllers.Questions.save()
+
+# About
+GET		/about/										 controllers.Application.about()

@@ -4,6 +4,7 @@ import dao.UserDAO;
 import models.core.User;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.about;
 
 import java.sql.SQLException;
 
@@ -34,4 +35,12 @@ public class Application extends Controller {
           return ok("Exception occurred");
       }
   }
+
+
+  public static Result about() {
+      return ok(about.render());
+  }
+
+
+
 }
