@@ -1,8 +1,7 @@
 package models.core;
 
 import controllers.Factory;
-import dao.impl.*;
-import dao.impl.ChoiceDAOImpl;
+
 import javax.persistence.*;
 
 
@@ -26,6 +25,8 @@ public class Choice {
 
     @Column(name="correct")
     public boolean correct;
+
+    public Choice() {}
 
     public Choice(Question question, ChoiceText choiceText, boolean correct) {
         this.question = question;

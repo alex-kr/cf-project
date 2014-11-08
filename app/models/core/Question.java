@@ -1,9 +1,9 @@
 package models.core;
 
 import controllers.Factory;
-import dao.impl.*;
-import dao.impl.QuestionDAOImpl;
+
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Victor Dichko on 14.09.14.
@@ -17,6 +17,9 @@ public class Question {
 
     @Column(name="question_text")
     public String questionText;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
+    public List<Choice> choices;
 
     public void save() {
     	try {

@@ -2,8 +2,7 @@ package models.core;
 
 
 import controllers.Factory;
-import dao.impl.*;
-import dao.impl.ChoiceTextDAOImpl;
+
 import javax.persistence.*;
 
 /**
@@ -18,6 +17,8 @@ public class ChoiceText {
 
     @Column(name="text")
     public String text;
+
+    public ChoiceText() {}
 
     public ChoiceText(String text) {
         this.text = text;
