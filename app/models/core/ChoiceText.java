@@ -1,6 +1,8 @@
 package models.core;
 
 
+import controllers.Factory;
+
 import javax.persistence.*;
 
 /**
@@ -15,4 +17,18 @@ public class ChoiceText {
 
     @Column(name="text")
     public String text;
+
+    public ChoiceText() {}
+
+    public ChoiceText(String text) {
+        this.text = text;
+    } 
+
+    public void save() {
+    	try {
+			Factory.getInstance().getChoiceTextDAO().addChoiceText(this);
+		} catch (Exception e) {
+			System.err.println("Smth wrong with saving choice_text into DB");
+		}
+    }
 }

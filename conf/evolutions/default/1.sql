@@ -55,7 +55,7 @@ create index ix_choice_question_5 on choice (question_id);
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET @@foreign_key_checks = 0;
 
 drop table if exists answer_record;
 
@@ -67,5 +67,4 @@ drop table if exists choice;
 
 drop table if exists choice_text;
 
-SET REFERENTIAL_INTEGRITY TRUE;
-
+SET @@foreign_key_checks = 1;

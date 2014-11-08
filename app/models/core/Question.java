@@ -1,5 +1,6 @@
 package models.core;
 
+import controllers.Factory;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,4 +20,12 @@ public class Question {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
     public List<Choice> choices;
+
+    public void save() {
+    	try {
+			Factory.getInstance().getQuestionDAO().addQuestion(this);
+		} catch (Exception e) {
+			System.err.println("Smth wrong with saving question into DB");
+		}
+    }
 }

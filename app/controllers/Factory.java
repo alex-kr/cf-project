@@ -36,7 +36,7 @@ public class Factory {
         return choiceTextDAO;
     }
 
-    public QuestionDAO getQuesionDAO() {
+    public QuestionDAO getQuestionDAO() {
         if (quesionDAO == null) {
             quesionDAO = new QuestionDAOImpl();
         }

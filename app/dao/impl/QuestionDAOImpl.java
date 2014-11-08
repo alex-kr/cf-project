@@ -65,7 +65,7 @@ public class QuestionDAOImpl implements QuestionDAO{
         return question;
     }
 
-    public Collection getAllQuestions() throws SQLException {
+    public List<Question> getAllQuestions() throws SQLException {
         Session session = null;
         List<Question> questions = new ArrayList<>();
         try {

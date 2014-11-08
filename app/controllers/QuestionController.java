@@ -52,7 +52,7 @@ public class QuestionController extends Controller {
         Choice choice = new Choice();
         try {
             user = Factory.getInstance().getUserDAO().getUserByFullname(fullname);
-            question = Factory.getInstance().getQuesionDAO().getQuestionById(qid);
+            question = Factory.getInstance().getQuestionDAO().getQuestionById(qid);
             choice = Factory.getInstance().getChoiceDAO().getChoiceById(choiceId);
         } catch (SQLException e) {
             e.printStackTrace();

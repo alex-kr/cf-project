@@ -1,0 +1,21 @@
+@(questionList: List[models.core.Question])
+
+	<h2>All Questions</h2>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Question</th>
+			</tr>
+		</thead>
+		<tbody>
+		@for(question <- questionList) {
+			<tr>
+				<td>@question.id</td>
+				<td>@question.questionText</td>
+			</tr>
+		}
+		</tbody>
+	</table>
+

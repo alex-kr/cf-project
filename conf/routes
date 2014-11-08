@@ -3,9 +3,18 @@
 # ~~~~
 
 # Home page
-GET         /                    controllers.Application.index
-GET         /questions           controllers.QuestionController.showQuestion()
-POST        /questions           controllers.QuestionController.submitAnswer()
+
+GET         /                            controllers.Application.index
+GET         /questions                   controllers.QuestionController.showQuestion()
+POST        /questions                   controllers.QuestionController.submitAnswer()
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.versioned(path="/public", file)
+GET         /assets/*file                controllers.Assets.versioned(path="/public", file)
+
+#Assets
+GET         /webjars/*file               controllers.WebJarAssets.at(file)
+
+# Questions
+GET         /crud/questions/             controllers.Questions.addQuestion()
+POST        /crud/questions/save/        controllers.Questions.save()
+

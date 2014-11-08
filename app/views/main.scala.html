@@ -1,11 +1,35 @@
-@(content: Html)
-<!DOCTYPE html>
-    <html>
+@(title: String)(content: Html)
+
+<html>
     <head>
         <title>Skills Checker</title>
+        <!-- Include the bootstrap stylesheets -->
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet"> 
     </head>
     <body>
-        <h1>Skills Checker</h1>
-        @content
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+            <div class="container">
+                <h3 class="pull-left" style="color: #F3E2F6;">@title</h3>
+
+                <div class="nav">
+                        <ul class="nav nav-tabs pull-right">
+                            <li><a href="#">Test</a></li>
+                            <li><a href="/crud/questions/save/">Add question</a></li>
+                            <li><a href="#contact">About</a></li>
+                        </ul>
+                </div> 
+            </div>
+        </nav> 
+        <div style="margin-top: 60px">
+            @content
+        </div>
+        <center>
+            <a href="#">Skills Checker 2014(c)</a>
+        </center>
+        <script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
+        <!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+        <script src="http:/netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     </body>
 </html>
+

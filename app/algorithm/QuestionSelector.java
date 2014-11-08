@@ -27,7 +27,7 @@ public class QuestionSelector {
             int listIdx = random.nextInt(questionIds.size());
             Long id = questionIds.get(listIdx);
             logger.debug("Get random question with id = " + id);
-            return Factory.getInstance().getQuesionDAO().getQuestionById(id);
+            return Factory.getInstance().getQuestionDAO().getQuestionById(id);
         }
         catch (SQLException ex) {
             logger.error("Error occurred when getting question: " + ex.getMessage());
