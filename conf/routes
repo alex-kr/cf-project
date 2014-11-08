@@ -5,6 +5,9 @@
 # Home page
 GET     /                          					 controllers.Application.index()
 
+#Assets
+GET     /webjars/*file                    			 controllers.WebJarAssets.at(file)
+
 # Questions
 GET 	/crud/questions/				 			 controllers.Questions.addQuestion()
 POST 	/crud/questions/save/			 			 controllers.Questions.save()

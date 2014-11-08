@@ -8,49 +8,54 @@
 
 @main("Question form") {
 
-<div class="container" style="background-image: url(http://img1.wikia.nocookie.net/__cb20061003200043/uncyclopedia/images/4/44/White_square.png)">
+<div class="container">
 
-	<h2>Add new question:</h2>
+	<div class="row">
 
-	@helper.form(action = routes.Questions.save(), 'role ->"form", 'class -> "form-horizontal col-xs-12") {
-	<div class="form-group col-xs-10">
-		@helper.textarea(questionForm("questionText"),
-									  '_label -> "Question",
-									  'rows -> 3, 
-        							  'class -> "input-xxxlarge form-control",
-        							  'placeholder -> "Enter question"
-    	)
-    </div>
-    <div class="form-group col-xs-10">
-    	<div class="row">
-    	<div class="col-xs-3">
-    	@helper.inputText(choicesForm("rightChoice"),
-    								  '_label -> "Right choice",
-    								  'class -> "form-control col-xs-3",
-    						  		  'placeholder -> "Enter choice"
-    	)
+	<div class="col-xs-1"></div>
+
+	<div class="col-xs-10">
+	@helper.form(action = routes.Questions.save(), 'role ->"form", 'class -> "form-horizontal") {	
+		<div class="form-group">
+			@helper.textarea(questionForm("questionText"),
+										  '_label -> "Question",
+										  'rows -> 3, 
+        								  'class -> "input-xxlarge form-control",
+        								  'placeholder -> "Enter question"
+   		 	)
     	</div>
-    	@helper.repeat(choicesForm("wrongChoice"), min = 3) { Field =>	
-    		<div class="col-xs-3">
-    		@helper.inputText(Field,
-    						  '_label -> "Wrong choice",
-    						  'class -> "form-control col-xs-3",
-    						  'placeholder -> "Enter choice"
-    		) 	
-    	</div>
-		}
-
+    	<div class="form-group">
+    		<div class="row">
+    			<div class="col-xs-3">
+    				@helper.inputText(choicesForm("rightChoice"),
+    											  '_label -> "Right choice",
+    											  'class -> "form-control col-xs-3",
+    						  					  'placeholder -> "Enter choice"
+    				)
+    			</div>
+    			@helper.repeat(choicesForm("wrongChoice"), min = 3) { Field =>	
+    				<div class="col-xs-3">
+    					@helper.inputText(Field,
+    									  '_label -> "Wrong choice",
+    									  'class -> "form-control col-xs-3",
+    									  'placeholder -> "Enter choice"
+    					) 	
+    				</div>
+				}
+	
+			</div>
+		
+			<input type="submit" class="btn btn-primary" style="margin: 10px" value="Submit">
+	
 		</div>
-		<input type="submit" class="btn btn-primary" style="margin: 10px" value="Submit">
-
-	</div>
-
 	}	
 
-
 	@questions(questionList)
-</div>
 
+	<div class="col-xs-2"></div>
+	</div>
+	</div>
+</div>
 
 	<script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
    	<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->

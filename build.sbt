@@ -11,6 +11,9 @@ libraryDependencies ++= Seq(
   "org.hibernate" % "hibernate-entitymanager" % "4.3.6.Final",
   "mysql" % "mysql-connector-java" % "5.1.28",
   cache,
-  "org.webjars" %% "webjars-play" % "2.3.0-2",
-  "org.webjars" % "bootstrap" % "3.1.1-2"
+  "org.webjars" %% "webjars-play" % "2.2.2-1",
+  "org.webjars" % "bootstrap" % "3.1.0",
+  "org.webjars" % "bootswatch-yeti" % "3.1.1",
+  "org.webjars" % "html5shiv" % "3.7.0",
+  "org.webjars" % "respond" % "1.4.2"
 )
