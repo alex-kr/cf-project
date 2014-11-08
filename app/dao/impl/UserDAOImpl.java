@@ -2,7 +2,9 @@ package dao.impl;
 
 import dao.UserDAO;
 import models.core.User;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import play.Logger;
 import util.HibernateUtil;
 
@@ -58,6 +60,30 @@ public class UserDAOImpl implements UserDAO {
             user = (User) session.get(User.class, id);
         } catch (Exception e) {
             logger.error("'findById' error. " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return user;
+    }
+
+    public User getUserByFullname(String fullname) throws SQLException {
+        Session session = null;
+        User user = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            //
+            Criteria cr = session.createCriteria(User.class);
+            cr.add(Restrictions.eq("fullname", fullname));
+            if (cr.list().isEmpty()) {
+                return null;
+                //throw new SQLException("Wrong number of user with fullname: " + fullname);
+            }
+            user = (User) cr.list().get(0);
+            //
+        } catch (Exception e) {
+            logger.error("'findByFullname' error. " + e.getMessage());
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();

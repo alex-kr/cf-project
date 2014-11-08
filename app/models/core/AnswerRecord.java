@@ -26,4 +26,8 @@ public class AnswerRecord {
     public Choice choice;
 
     public boolean correct;
+
+    public User getUser() {
+        return user;
+    }
 }
