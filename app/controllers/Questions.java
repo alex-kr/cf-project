@@ -17,6 +17,7 @@ import play.data.Form;
 import views.html.questions;
 import views.html.addform;
 import java.util.*;
+import java.util.concurrent.SynchronousQueue;
 
 import controllers.helpers.ChoiceTextHolder;
 
@@ -81,22 +82,33 @@ public class Questions extends Controller {
 		question.save();
 		String rightChoice = choiceTextHolderForm.bindFromRequest().get().rightChoice;
 		List<String> wrongChoices = choiceTextHolderForm.bindFromRequest().get().wrongChoice;
-		ChoiceText rightChoiceText = new ChoiceText(rightChoice);
-		ChoiceText wrongChoiceText1 = new ChoiceText(wrongChoices.get(0));
-		ChoiceText wrongChoiceText2 = new ChoiceText(wrongChoices.get(1));
-		ChoiceText wrongChoiceText3 = new ChoiceText(wrongChoices.get(2));
-		rightChoiceText.save();
-		wrongChoiceText1.save();
-		wrongChoiceText2.save();
-		wrongChoiceText3.save();
-		Choice choice1 = new Choice(question, rightChoiceText, true);
-		Choice choice2 = new Choice(question, wrongChoiceText1, false);
-		Choice choice3 = new Choice(question, wrongChoiceText2, false);
-		Choice choice4 = new Choice(question, wrongChoiceText3, false);
-		choice1.save();
-		choice2.save();
-		choice3.save();
-		choice4.save();
+        List<ChoiceText> choiceTexts = new ArrayList<>();
+        try{
+            choiceTexts = (ArrayList)Factory.getInstance().getChoiceTextDAO().getAllChoiceTexts();
+        }catch (Exception e) {
+            System.err.println("Smth wrong");
+        }
+
+        List<ChoiceText> choiceTextRW = new ArrayList<>();
+        choiceTextRW.add(new ChoiceText(rightChoice));
+        for(String i : wrongChoices)
+            choiceTextRW.add(new ChoiceText(i));
+
+        for(ChoiceText i : choiceTextRW){
+
+            for(ChoiceText j : choiceTexts)//check if we already have such choicetexts
+                if(j.text.equals(i.text))
+                    i.id = j.id;
+
+            if(i.id == null)
+                i.save();
+
+            if(choiceTextRW.indexOf(i) == 0)
+                new Choice(question,i,true).save();
+            else
+                new Choice(question,i,false).save();
+        }
+
 		List<Question> quest = new ArrayList<Question>();
 		try {
 			quest = Factory.getInstance().getQuestionDAO().getAllQuestions();
