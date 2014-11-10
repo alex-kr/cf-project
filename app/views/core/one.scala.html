@@ -1,4 +1,4 @@
-@(qto: to.QuestionTO, uto: to.UserTO)
+@(qto: to.QuestionTO, uto: to.UserTO, ctolist: List[to.ChoiceTO])
 <!DOCTYPE html>
 <html>
     <head>
@@ -49,7 +49,7 @@
                 User: <input type="text" name="fullname" value="@{uto.fullname}">
                 <h2> @qto.text </h2>
                 <div style="padding-left: 40px; padding-bottom: 10px;">
-                    @for(choice <- qto.choices) {
+                    @for(choice <- ctolist) {
                         <label><input type="radio" name="answer" value="@{choice.id}">  @choice.text  </label>
                         <br/>
                     }

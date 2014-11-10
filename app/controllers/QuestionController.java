@@ -15,8 +15,14 @@ import to.UserTO;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
+import dao.impl.ChoiceDAOImpl;
+
+import to.Transformer;
 import static to.Transformer.convert;
+
 
 /**
  * Created by Victor Dichko on 08.10.14.
@@ -33,7 +39,18 @@ public class QuestionController extends Controller {
         Question question = QuestionSelector.getRandom();
         QuestionTO qto = convert(question);
         UserTO uto = convert(user);
-        return ok(views.html.core.one.render(qto, uto));
+        List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
+        List<Choice> clist = null;
+        try {
+            clist = Factory.getInstance().getChoiceDAO().getChoicesByQuestionId(question.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for (Choice choice: clist) {
+            ctolist.add(Transformer.convert(choice));
+        }
+        return ok(views.html.core.one.render(qto, uto, ctolist));
     }
 
     public static Result submitAnswer() {
@@ -82,6 +99,18 @@ public class QuestionController extends Controller {
 
         QuestionTO qto = convert(question);
         ChoiceTO cto = convert(choice);
-        return ok(views.html.core.oneresult.render(qto, cto));
+
+        List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
+        List<Choice> clist = null;
+        try {
+            clist = Factory.getInstance().getChoiceDAO().getChoicesByQuestionId(question.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for (Choice c: clist) {
+            ctolist.add(Transformer.convert(c));
+        }
+        return ok(views.html.core.oneresult.render(qto, cto, ctolist));
     }
 }

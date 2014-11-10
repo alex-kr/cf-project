@@ -67,6 +67,7 @@ public class Questions extends Controller {
 		List<Question> quest = new ArrayList<Question>();
 		try {
 			quest = Factory.getInstance().getQuestionDAO().getAllQuestions();
+			System.err.println("\n\n\n\n\n\n\n\n\n\n" + quest.size());
 		} catch (Exception e) {
 			System.err.println("Smth wrong");
 		}

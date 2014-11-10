@@ -11,9 +11,6 @@ public class Transformer {
         QuestionTO qto = new QuestionTO();
         qto.id = q.id;
         qto.text = q.questionText;
-        qto.choices = q.choices.stream().map(c -> convert(c))
-                .sorted((c1, c2) -> Integer.compare(c1.text.hashCode(), c2.text.hashCode()))
-                .collect(Collectors.toList());
         return qto;
     }
 
@@ -22,6 +19,7 @@ public class Transformer {
         cto.id = c.id;
         cto.text = c.choiceText.text;
         cto.correct = c.correct;
+        cto.questionId = c.question.id;
         return cto;
     }
 

@@ -7,4 +7,5 @@ public class ChoiceTO {
     public long id;
     public String text;
     public boolean correct;
+    public Long questionId;
 }

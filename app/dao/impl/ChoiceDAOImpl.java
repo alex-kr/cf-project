@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import play.Logger;
 import util.HibernateUtil;
 
+import org.hibernate.criterion.Restrictions;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,6 +72,23 @@ public class ChoiceDAOImpl implements ChoiceDAO{
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             choices = session.createCriteria(Choice.class).list();
+        } catch (Exception e) {
+            logger.error("'getAllChoices' error. " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return choices;
+    }
+
+    public List<Choice> getChoicesByQuestionId(Long questionId) {
+        Session session = null;
+        List<Choice> choices = new ArrayList<>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            choices = session.createCriteria(Choice.class)
+                             .add(Restrictions.eq("question.id", questionId)).list();
         } catch (Exception e) {
             logger.error("'getAllChoices' error. " + e.getMessage());
         } finally {

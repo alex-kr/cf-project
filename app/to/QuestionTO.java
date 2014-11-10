@@ -8,6 +8,4 @@ import java.util.List;
 public class QuestionTO {
     public String text;
     public long id;
-    public String explanation;
-    public List<ChoiceTO> choices;
 }

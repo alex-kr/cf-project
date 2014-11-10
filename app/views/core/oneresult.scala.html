@@ -1,4 +1,4 @@
-@(qto: to.QuestionTO, cto: to.ChoiceTO)
+@(qto: to.QuestionTO, cto: to.ChoiceTO, ctolist: List[to.ChoiceTO])
 <!DOCTYPE html>
 <html>
     <head>
@@ -49,7 +49,7 @@
             <h2> @qto.text </h2>
             <form name="input" action="/questions" method="GET" >
                 <div style="padding-left: 40px; padding-bottom: 10px;">
-                    @for(choice <- qto.choices) {
+                    @for(choice <- ctolist) {
                         <label> <b><span class=@if(choice.correct){"green"} else {"red"}>  @choice.text</span> </b>
                         </label>
                         <br />

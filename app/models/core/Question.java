@@ -18,9 +18,6 @@ public class Question {
     @Column(name="question_text")
     public String questionText;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
-    public List<Choice> choices;
-
     public void save() {
     	try {
 			Factory.getInstance().getQuestionDAO().addQuestion(this);
