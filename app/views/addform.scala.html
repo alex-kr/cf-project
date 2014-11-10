@@ -1,0 +1,63 @@
+@(questionList: List[models.core.Question], questionForm: Form[models.core.Question]
+										  , choicesForm: Form[controllers.helpers.ChoiceTextHolder])
+@import helper._
+@import helper.twitterBootstrap._
+
+<!-- Include the bootstrap stylesheets -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+@main("Question form") {
+
+<div class="container">
+
+	<div class="row">
+
+	<div class="col-xs-1"></div>
+
+	<div class="col-xs-10">
+	@helper.form(action = routes.Questions.save(), 'role ->"form", 'class -> "form-horizontal") {	
+		<div class="form-group">
+			@helper.textarea(questionForm("questionText"),
+										  '_label -> "Question",
+										  'rows -> 3, 
+        								  'class -> "input-xxlarge form-control",
+        								  'placeholder -> "Enter question"
+   		 	)
+    	</div>
+    	<div class="form-group">
+    		<div class="row">
+    			<div class="col-xs-3">
+    				@helper.inputText(choicesForm("rightChoice"),
+    											  '_label -> "Right choice",
+    											  'class -> "form-control col-xs-3",
+    						  					  'placeholder -> "Enter choice"
+    				)
+    			</div>
+    			@helper.repeat(choicesForm("wrongChoice"), min = 3) { Field =>	
+    				<div class="col-xs-3">
+    					@helper.inputText(Field,
+    									  '_label -> "Wrong choice",
+    									  'class -> "form-control col-xs-3",
+    									  'placeholder -> "Enter choice"
+    					) 	
+    				</div>
+				}
+	
+			</div>
+		
+			<input type="submit" class="btn btn-primary" style="margin: 10px" value="Submit">
+	
+		</div>
+	}	
+
+	@questions(questionList)
+
+	<div class="col-xs-2"></div>
+	</div>
+	</div>
+</div>
+
+	<script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
+   	<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+    <script src="http:/netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+}
