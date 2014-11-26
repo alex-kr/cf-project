@@ -1,5 +1,5 @@
 @(qto: to.QuestionTO, cto: to.ChoiceTO, ctolist: List[to.ChoiceTO])
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
     <head>
         <title>@Messages("Demo One")</title>
@@ -44,6 +44,8 @@
         </style>
     </head>
     <body>
+        -->
+        @main("Test") {
         <div class="main">
             <h2> Your answer: <span class=@if(cto.correct){"green"} else {"red"}> @cto.text </span></h2>
             <h2> @qto.text </h2>
@@ -58,5 +60,49 @@
                 <button class="button-xlarge pure-button">Next</button>
             </form>
         </div>
+
+
+
+
+            <style>
+            div {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0 auto;
+            margin-left: auto; margin-right: auto;
+            max-width:720px
+            }
+            .main {
+            margin: 0 auto;
+            margin-left: auto; margin-right: auto;
+            line-height: 225%;
+            }
+            p.sansserif {
+            font-family: Arial, Helvetica, sans-serif;
+            }
+            h1, h2, h3 {
+            font-family: Helvetica, Arial, sans-serif;
+            margin-bottom: 1px;
+            }
+            .red {
+            color:red;
+            }
+            .green {
+            color:green;
+            }
+            label {
+            cursor: pointer;
+            font-size: 150%;
+            vertical-align: top;
+            }
+            </style>
+            <style scoped>
+            .button-xlarge {
+            font-size: 150%;
+            width: 360px;
+            }
+            </style>
+        }
+        <!--
     </body>
 </html>
+            +->
