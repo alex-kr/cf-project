@@ -123,14 +123,18 @@ System.out.println(max);
                 if(a.user.id.equals(userId)) userAnswers.add(a);
             }
             Map<Long,Double> choices = new HashMap<>();//Collections.emptyMap();
-            for(Long i : questionIds){
-                for(AnswerRecord a : userAnswers)
-                        if(a.correct) choices.put(a.question.id,0.5);
-                        else choices.put(a.question.id, 1.0);
 
+            for(AnswerRecord a : userAnswers){
+//                if(!choices.containsKey(a.question.id)){
+                    if(a.correct) choices.put(a.question.id,0.5);
+                    else choices.put(a.question.id, 1.0);
+//                }else if(a.correct) choices.put(a.question.id,choices.get(a.question.id) + 0.5)
+            }
+
+            for(Long i : questionIds)
                 if(!choices.containsKey(i))
                     choices.put(i,0.0);
-            }
+
             userChoices.put(userId,choices);
         }
 
@@ -139,7 +143,7 @@ System.out.println(max);
 
     private static boolean userAlreadyAnswers(User user,Long questionId,List<AnswerRecord> answerRecords){
         for(AnswerRecord i : answerRecords){
-            if((i.getUser() == user) && (i.question.id.equals(questionId)))
+            if((i.getUser().id.equals(user.id)) && (i.question.id.equals(questionId)))
                 return true;
         }
         return false;
