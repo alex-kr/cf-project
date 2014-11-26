@@ -1,5 +1,5 @@
-@(qto: to.QuestionTO, uto: to.UserTO)
-<!DOCTYPE html>
+@(qto: to.QuestionTO, uto: to.UserTO, ctolist: List[to.ChoiceTO])
+<!--<!DOCTYPE html>
 <html>
     <head>
         <title>@Messages("Demo One")</title>
@@ -43,13 +43,14 @@
             }
         </style>
     </head>
-    <body>
+    <body> -->
+        @main("Test") {
         <div class="main">
             <form name="input" action="/questions" method="POST" >
                 User: <input type="text" name="fullname" value="@{uto.fullname}">
                 <h2> @qto.text </h2>
                 <div style="padding-left: 40px; padding-bottom: 10px;">
-                    @for(choice <- qto.choices) {
+                    @for(choice <- ctolist) {
                         <label><input type="radio" name="answer" value="@{choice.id}">  @choice.text  </label>
                         <br/>
                     }
@@ -58,5 +59,47 @@
                 <button class="button-xlarge pure-button">Check answer</button>
             </form>
         </div>
+
+            <style>
+            div {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0 auto;
+            margin-left: auto; margin-right: auto;
+            max-width:720px
+            }
+            .main {
+            margin: 0 auto;
+            margin-left: auto; margin-right: auto;
+            line-height: 225%;
+            }
+            p.sansserif {
+            font-family: Arial, Helvetica, sans-serif;
+            }
+            h1, h2, h3 {
+            font-family: Helvetica, Arial, sans-serif;
+            margin-bottom: 1px;
+            }
+            .red {
+            color:red;
+            }
+            .green {
+            color:green;
+            }
+            label {
+            cursor: pointer;
+            font-size: 150%;
+            vertical-align: top;
+            }
+            </style>
+            <style scoped>
+            .button-xlarge {
+            font-size: 150%;
+            width: 360px;
+            }
+            </style>
+
+        }
+     <!--
     </body>
 </html>
+    -->

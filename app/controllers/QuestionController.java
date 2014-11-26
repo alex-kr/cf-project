@@ -1,5 +1,6 @@
 package controllers;
 
+import algorithm.CollaborativeFiltering;
 import algorithm.QuestionSelector;
 import models.core.AnswerRecord;
 import models.core.Choice;
@@ -11,12 +12,14 @@ import play.mvc.Http;
 import play.mvc.Result;
 import to.ChoiceTO;
 import to.QuestionTO;
+import to.Transformer;
 import to.UserTO;
 
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.*;
 
 import static to.Transformer.convert;
+
 
 /**
  * Created by Victor Dichko on 08.10.14.
@@ -25,15 +28,40 @@ public class QuestionController extends Controller {
 
     private static final Logger.ALogger logger = Logger.of(QuestionController.class);
 
+    private static long seed;
+
     public static Result showQuestion() {
         User user = new User();
-        user.id = 0L;
-        user.fullname = session("fullname");
-
-        Question question = QuestionSelector.getRandom();
+        try {
+            user = Factory.getInstance().getUserDAO().getUserByFullname(session("fullname"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Question question;
+        if (user == null) {
+            user = new User();
+            user.id = 0L;
+            user.fullname = session("fullname");
+            question = QuestionSelector.getRandom();
+        } else {
+            question = CollaborativeFiltering.getNextQuestion(user);
+            //question = QuestionSelector.getRandom();
+        }
         QuestionTO qto = convert(question);
         UserTO uto = convert(user);
-        return ok(views.html.core.one.render(qto, uto));
+        List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
+        List<Choice> clist = null;
+        try {
+            clist = Factory.getInstance().getChoiceDAO().getChoicesByQuestionId(question.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        seed = System.nanoTime();
+        Collections.shuffle(clist, new Random(seed));
+        for (Choice choice: clist) {
+            ctolist.add(Transformer.convert(choice));
+        }
+        return ok(views.html.core.one.render(qto, uto, ctolist));
     }
 
     public static Result submitAnswer() {
@@ -63,12 +91,12 @@ public class QuestionController extends Controller {
             user = new User();
             user.fullname = fullname;
             user.isAdmin = false;
-            try {
-                Factory.getInstance().getUserDAO().addUser(user);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try {
+            Factory.getInstance().getUserDAO().addUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
             // Saving data to DB
         answerRecord.user = user;
         answerRecord.question = question;
@@ -82,6 +110,19 @@ public class QuestionController extends Controller {
 
         QuestionTO qto = convert(question);
         ChoiceTO cto = convert(choice);
-        return ok(views.html.core.oneresult.render(qto, cto));
+
+        List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
+        List<Choice> clist = null;
+        try {
+            clist = Factory.getInstance().getChoiceDAO().getChoicesByQuestionId(question.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for (Choice c: clist) {
+            ctolist.add(Transformer.convert(c));
+        }
+        Collections.shuffle(ctolist, new Random(seed));
+        return ok(views.html.core.oneresult.render(qto, cto, ctolist));
     }
 }
