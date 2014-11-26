@@ -13,6 +13,7 @@ public class Factory {
     private static QuestionDAO quesionDAO = null;
     private static ChoiceDAO choiceDAO = null;
     private static AnswerRecordDAO answerRecordDAO = null;
+    private static RuleDAO ruleDAO = null;
     private static Factory instance = null;
 
     public static synchronized Factory getInstance() {
@@ -55,5 +56,12 @@ public class Factory {
             answerRecordDAO = new AnswerRecordDAOImpl();
         }
         return answerRecordDAO;
+    }
+
+    public RuleDAO getRuleDAO() {
+        if (ruleDAO == null) {
+            ruleDAO = new RuleDAOImpl();
+        }
+        return ruleDAO;
     }
 }
