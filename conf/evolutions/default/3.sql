@@ -7,5 +7,5 @@ create index ix_question_rule_6 on question (rule_id);
 # --- !Downs
 
 alter table question drop foreign key fk_question_rule_6;
-drop index question_rule_6 on question;
+drop index ix_question_rule_6 on question;
 alter table question drop rule_id;
