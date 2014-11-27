@@ -10,7 +10,7 @@ public class Factory {
 
     private static UserDAO userDAO = null;
     private static ChoiceTextDAO choiceTextDAO = null;
-    private static QuestionDAO quesionDAO = null;
+    private static QuestionDAO questionDAO = null;
     private static ChoiceDAO choiceDAO = null;
     private static AnswerRecordDAO answerRecordDAO = null;
     private static RuleDAO ruleDAO = null;
@@ -38,10 +38,10 @@ public class Factory {
     }
 
     public QuestionDAO getQuestionDAO() {
-        if (quesionDAO == null) {
-            quesionDAO = new QuestionDAOImpl();
+        if (questionDAO == null) {
+            questionDAO = new QuestionDAOImpl();
         }
-        return quesionDAO;
+        return questionDAO;
     }
 
     public ChoiceDAO getChoiceDAO() {
