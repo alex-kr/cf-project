@@ -1,19 +1,12 @@
 package controllers;
 
-import algorithm.CollaborativeFiltering;
 import algorithm.QuestionSelector;
-import models.core.AnswerRecord;
-import models.core.Choice;
-import models.core.Question;
-import models.core.User;
+import models.core.*;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import to.ChoiceTO;
-import to.QuestionTO;
-import to.Transformer;
-import to.UserTO;
+import to.*;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -44,8 +37,8 @@ public class QuestionController extends Controller {
             user.fullname = session("fullname");
             question = QuestionSelector.getRandom();
         } else {
-            question = CollaborativeFiltering.getNextQuestion(user);
-            //question = QuestionSelector.getRandom();
+            //question = CollaborativeFiltering.getNextQuestion(user);
+            question = QuestionSelector.getRandom();
         }
         QuestionTO qto = convert(question);
         UserTO uto = convert(user);
@@ -123,6 +116,14 @@ public class QuestionController extends Controller {
             ctolist.add(Transformer.convert(c));
         }
         Collections.shuffle(ctolist, new Random(seed));
-        return ok(views.html.core.oneresult.render(qto, cto, ctolist));
+
+        Rule rule = null;
+        try {
+            rule = Factory.getInstance().getRuleDAO().getRuleById(question.rule.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        RuleTO rto = convert(rule);
+        return ok(views.html.core.oneresult.render(qto, cto, ctolist, rto));
     }
 }
