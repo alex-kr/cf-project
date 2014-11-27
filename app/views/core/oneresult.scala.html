@@ -1,4 +1,4 @@
-@(qto: to.QuestionTO, cto: to.ChoiceTO, ctolist: List[to.ChoiceTO])
+@(qto: to.QuestionTO, cto: to.ChoiceTO, ctolist: List[to.ChoiceTO], rto: to.RuleTO)
 
 @main("Test") {
     <div class="main">
@@ -11,6 +11,9 @@
                     </label>
                     <br />
                 }
+            </div>
+            <div>
+                @rto.ruleText
             </div>
             <button class="button-xlarge pure-button">Next</button>
         </form>
