@@ -4,6 +4,7 @@ import models.core.Choice;
 import models.core.Question;
 import models.core.Rule;
 import models.core.User;
+import models.core.Topic;
 
 public class Transformer {
     public static QuestionTO convert(Question q) {
@@ -36,6 +37,14 @@ public class Transformer {
         RuleTO rto = new RuleTO();
         rto.id = r.id;
         rto.ruleText =r.ruleText;
+        rto.topicId = r.topic.id;
         return rto;
+    }
+
+    public static TopicTO convert(Topic t) {
+        TopicTO tto = new TopicTO();
+        tto.id = t.id;
+        tto.topicText =t.topicText;
+        return tto;
     }
 }

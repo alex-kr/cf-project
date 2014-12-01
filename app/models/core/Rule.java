@@ -2,6 +2,8 @@ package models.core;
 
 import controllers.Factory;
 
+import models.core.Topic;
+
 import javax.persistence.*;
 
 
@@ -15,6 +17,10 @@ public class Rule {
 
     @Column(name="rule_text")
     public String ruleText;
+
+    @ManyToOne
+    @JoinColumn(name="topic_id")
+    public Topic topic;
 
     public void save() {
     	try {

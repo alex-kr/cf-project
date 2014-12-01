@@ -6,4 +6,5 @@ package to;
 public class RuleTO {
     public long id;
     public String ruleText;
+    public long topicId;
 }

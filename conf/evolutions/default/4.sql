@@ -1,6 +1,6 @@
 # --- !Ups
 
-alter table question add level bigint not null;
+alter table question add level bigint;
 
 # --- !Downs
 
