@@ -21,6 +21,9 @@ public class Question {
     @JoinColumn(name="rule_id")
     public Rule rule;
 
+    @Column(name="level")
+    public Long level;
+
     public void save() {
     	try {
 			Factory.getInstance().getQuestionDAO().addQuestion(this);

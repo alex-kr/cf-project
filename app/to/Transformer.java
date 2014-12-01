@@ -11,6 +11,7 @@ public class Transformer {
         qto.id = q.id;
         qto.text = q.questionText;
         qto.ruleId = q.rule.id;
+        qto.level = q.level;
         return qto;
     }
 
