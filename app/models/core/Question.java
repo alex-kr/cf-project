@@ -3,7 +3,6 @@ package models.core;
 import controllers.Factory;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by Victor Dichko on 14.09.14.
@@ -17,6 +16,13 @@ public class Question {
 
     @Column(name="question_text")
     public String questionText;
+
+    @ManyToOne
+    @JoinColumn(name="rule_id")
+    public Rule rule;
+
+    @Column(name="level")
+    public Long level;
 
     public void save() {
     	try {

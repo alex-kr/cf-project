@@ -1,26 +1,16 @@
 package controllers;
 
 import algorithm.QuestionSelector;
-import models.core.AnswerRecord;
-import models.core.Choice;
-import models.core.Question;
-import models.core.User;
+import models.core.*;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import to.ChoiceTO;
-import to.QuestionTO;
-import to.UserTO;
+import to.*;
 
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
-import dao.impl.ChoiceDAOImpl;
-
-import to.Transformer;
 import static to.Transformer.convert;
 
 
@@ -31,12 +21,25 @@ public class QuestionController extends Controller {
 
     private static final Logger.ALogger logger = Logger.of(QuestionController.class);
 
+    private static long seed;
+
     public static Result showQuestion() {
         User user = new User();
-        user.id = 0L;
-        user.fullname = session("fullname");
-
-        Question question = QuestionSelector.getRandom();
+        try {
+            user = Factory.getInstance().getUserDAO().getUserByFullname(session("fullname"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Question question;
+        if (user == null) {
+            user = new User();
+            user.id = 0L;
+            user.fullname = session("fullname");
+            question = QuestionSelector.getRandom();
+        } else {
+            //question = CollaborativeFiltering.getNextQuestion(user);
+            question = QuestionSelector.getRandom();
+        }
         QuestionTO qto = convert(question);
         UserTO uto = convert(user);
         List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
@@ -46,7 +49,8 @@ public class QuestionController extends Controller {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        seed = System.nanoTime();
+        Collections.shuffle(clist, new Random(seed));
         for (Choice choice: clist) {
             ctolist.add(Transformer.convert(choice));
         }
@@ -80,12 +84,12 @@ public class QuestionController extends Controller {
             user = new User();
             user.fullname = fullname;
             user.isAdmin = false;
-            try {
-                Factory.getInstance().getUserDAO().addUser(user);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try {
+            Factory.getInstance().getUserDAO().addUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
             // Saving data to DB
         answerRecord.user = user;
         answerRecord.question = question;
@@ -111,6 +115,15 @@ public class QuestionController extends Controller {
         for (Choice c: clist) {
             ctolist.add(Transformer.convert(c));
         }
-        return ok(views.html.core.oneresult.render(qto, cto, ctolist));
+        Collections.shuffle(ctolist, new Random(seed));
+
+        Rule rule = null;
+        try {
+            rule = Factory.getInstance().getRuleDAO().getRuleById(question.rule.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        RuleTO rto = convert(rule);
+        return ok(views.html.core.oneresult.render(qto, cto, ctolist, rto));
     }
 }

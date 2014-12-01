@@ -22,6 +22,8 @@ public class HibernateUtil {
             config.addAnnotatedClass(Question.class);
             config.addAnnotatedClass(Choice.class);
             config.addAnnotatedClass(AnswerRecord.class);
+            config.addAnnotatedClass(Rule.class);
+            config.addAnnotatedClass(Topic.class);
             sessionFactory = config.buildSessionFactory();
         } catch (Throwable ex) {
             logger.error("Initial SessionFactory creation failed. " + ex);
