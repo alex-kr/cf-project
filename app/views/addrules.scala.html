@@ -1,0 +1,49 @@
+@(ruleList: List[models.core.Rule], ruleForm: Form[models.core.Rule])
+@import models.core.Topic
+@import helper._
+@import helper.twitterBootstrap._
+
+<!-- Include the bootstrap stylesheets -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+@main("Rule form") {
+
+<div class="container">
+
+	<div class="row">
+
+    <div class="col-xs-2"></div>
+
+	<div class="col-xs-8">
+	@helper.form(action = routes.Rules.save(), 'role ->"form", 'class -> "form-horizontal") {	
+		<div class="form-group">
+			@helper.inputText(ruleForm("ruleText"),
+										  '_label -> "Rule",
+        								  'class -> "form-control",
+        								  'placeholder -> "Enter rule"
+   		 	)
+   		 	@select(
+        		ruleForm("topic.id"),
+        		options = options(Topic.getMap),
+        		'_label -> "Topic",
+        		'_default -> "-- None --",
+        		'_showConstraints -> false
+    		)
+    	</div>
+        
+		
+		<input type="submit" class="btn btn-primary" style="margin: 10px" value="Submit">
+	
+	}	
+
+
+	   @rules(ruleList)
+	<div class="col-xs-2"></div>
+	</div>
+	</div>
+</div>
+
+	<script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
+   	<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+    <script src="http:/netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+}

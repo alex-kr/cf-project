@@ -4,6 +4,9 @@ import controllers.Factory;
 
 import javax.persistence.*;
 
+import java.util.Map;
+import java.util.LinkedHashMap;
+
 
 @Entity
 @Table(name = "topic")
@@ -21,5 +24,17 @@ public class Topic {
 		} catch (Exception e) {
 			System.err.println("Smth wrong with saving topic into DB");
 		}
+    }
+
+    public static Map<String, String> getMap() {
+        LinkedHashMap<String, String> options = new LinkedHashMap<String,String>();
+        try {
+            for (Topic topic: Factory.getInstance().getTopicDAO().getAllTopics()) {
+                options.put(topic.id.toString(), topic.topicText);
+            }
+        } catch (Exception e) {
+            System.err.println("Smth wrong with getting topic from DB");
+        }
+        return options;
     }
 }
