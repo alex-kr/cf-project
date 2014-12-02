@@ -2,9 +2,12 @@ package models.core;
 
 import controllers.Factory;
 
-import models.core.Topic;
+import models.core.Rule;
 
 import javax.persistence.*;
+
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 
 
@@ -28,5 +31,17 @@ public class Rule {
 		} catch (Exception e) {
 			System.err.println("Smth wrong with saving rule into DB");
 		}
+    }
+
+    public static Map<String, String> getMap() {
+        LinkedHashMap<String, String> options = new LinkedHashMap<String,String>();
+        try {
+            for (Rule rule: Factory.getInstance().getRuleDAO().getAllRules()) {
+                options.put(rule.id.toString(), rule.ruleText);
+            }
+        } catch (Exception e) {
+            System.err.println("Smth wrong with getting rule from DB");
+        }
+        return options;
     }
 }
