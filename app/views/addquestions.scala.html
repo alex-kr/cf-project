@@ -1,5 +1,6 @@
 @(questionList: List[models.core.Question], questionForm: Form[models.core.Question]
 										  , choicesForm: Form[controllers.helpers.ChoiceTextHolder])
+@import models.core.Rule
 @import helper._
 @import helper.twitterBootstrap._
 
@@ -25,11 +26,24 @@
    		 	)
     	</div>
         <div class="form-group">
-            @inputRadioGroup(
-                questionForm("level"),
-                options = options("1" -> "1", "2" -> "2", "3" -> "3"),
-                '_label -> "Level"
-            )
+            <div class="row">
+                <div class="col-xs-6">
+                @inputRadioGroup(
+                    questionForm("level"),
+                    options = options("1" -> "1", "2" -> "2", "3" -> "3"),
+                    '_label -> "Level"
+                )
+                </div>                
+                <div class="col-xs-6 form-group">
+                @select(
+                    questionForm("rule.id"),
+                    options = options(Rule.getMap),
+                    '_label -> "Rule",
+                    '_default -> "-- None --",
+                    '_showConstraints -> false
+                )
+                </div>
+            </div>
         </div>
     	<div class="form-group">
     		<div class="row">
