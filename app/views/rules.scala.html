@@ -1,0 +1,22 @@
+@(ruleList: List[models.core.Rule])
+
+	<h2>All Rules</h2>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Topic</th>
+				<th>Rule</th>
+			</tr>
+		</thead>
+		<tbody>
+		@for(rule <- ruleList) {
+			<tr>
+				<td>@rule.id</td>
+				<td>@rule.topic.topicText</td>
+				<td>@rule.ruleText</td>
+			</tr>
+		}
+		</tbody>
+	</table>

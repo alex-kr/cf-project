@@ -1,0 +1,20 @@
+@(topicList: List[models.core.Topic])
+
+	<h2>All Topics</h2>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Topic</th>
+			</tr>
+		</thead>
+		<tbody>
+		@for(topic <- topicList) {
+			<tr>
+				<td>@topic.id</td>
+				<td>@topic.topicText</td>
+			</tr>
+		}
+		</tbody>
+	</table>
