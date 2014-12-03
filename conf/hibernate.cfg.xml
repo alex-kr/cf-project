@@ -7,15 +7,13 @@
         <property name="hibernate.dialect">
             org.hibernate.dialect.PostgreSQLDialect
         </property>
-        <!--
         <property name="hibernate.connection.driver_class">
             org.postgresql.Driver
         </property>
-        -->
 
         <!-- Assume test is the database name -->
         <property name="hibernate.connection.url">
-            jdbc:postgresql://localhost/test?user=fred&password=secret
+            ${DATABASE_URL}
         </property>
         <property name="hibernate.connection.username">
             mdplhslyejqhev
