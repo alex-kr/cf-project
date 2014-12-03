@@ -24,24 +24,24 @@ public class QuestionController extends Controller {
     private static long seed;
 
     public static Result showQuestion() {
-        User user = new User();
+        Account account = new Account();
         try {
-            user = Factory.getInstance().getUserDAO().getUserByFullname(session("fullname"));
+            account = Factory.getInstance().getUserDAO().getAccountByFullname(session("fullname"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         Question question;
-        if (user == null) {
-            user = new User();
-            user.id = 0L;
-            user.fullname = session("fullname");
+        if (account == null) {
+            account = new Account();
+            account.id = 0L;
+            account.fullname = session("fullname");
             question = QuestionSelector.getRandom();
         } else {
             //question = CollaborativeFiltering.getNextQuestion(user);
             question = QuestionSelector.getRandom();
         }
         QuestionTO qto = convert(question);
-        UserTO uto = convert(user);
+        AccountTO uto = convert(account);
         List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
         List<Choice> clist = null;
         try {
@@ -68,11 +68,11 @@ public class QuestionController extends Controller {
         // Persisting data
         session("fullname", fullname);
         AnswerRecord answerRecord = new AnswerRecord();
-        User user = new User();
+        Account account = new Account();
         Question question = new Question();
         Choice choice = new Choice();
         try {
-            user = Factory.getInstance().getUserDAO().getUserByFullname(fullname);
+            account = Factory.getInstance().getUserDAO().getAccountByFullname(fullname);
             question = Factory.getInstance().getQuestionDAO().getQuestionById(qid);
             choice = Factory.getInstance().getChoiceDAO().getChoiceById(choiceId);
         } catch (SQLException e) {
@@ -80,18 +80,18 @@ public class QuestionController extends Controller {
         }
 
             // Creating user if doesn't exist
-        if (user == null) {
-            user = new User();
-            user.fullname = fullname;
-            user.isAdmin = false;
+        if (account == null) {
+            account = new Account();
+            account.fullname = fullname;
+            account.isAdmin = false;
         try {
-            Factory.getInstance().getUserDAO().addUser(user);
+            Factory.getInstance().getUserDAO().addAccount(account);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
             // Saving data to DB
-        answerRecord.user = user;
+        answerRecord.account = account;
         answerRecord.question = question;
         answerRecord.choice = choice;
         answerRecord.correct = choice.correct;

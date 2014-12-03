@@ -3,20 +3,29 @@
 # ~~~~
 
 # Home page
-
 GET         /                            controllers.Application.index
-GET         /questions                   controllers.QuestionController.showQuestion()
-POST        /questions                   controllers.QuestionController.submitAnswer()
 
-#Assets
-GET     /webjars/*file                    			 controllers.WebJarAssets.at(file)
-GET  	/assets/*file        					 	 controllers.Assets.at(path="/public",file)
+# Test page
+GET      /questions                   controllers.QuestionController.showQuestion()
+POST     /questions                   controllers.QuestionController.submitAnswer()
+
+# Assets
+GET     /webjars/*file				  controllers.WebJarAssets.at(file)
+GET  	/assets/*file        		  controllers.Assets.at(path="/public",file)
 
 # Questions
-GET 	/crud/questions/				 			 controllers.Questions.addQuestion()
-POST 	/crud/questions/			 			 	 controllers.Questions.save()
+GET 	/crud/questions/			  controllers.Questions.addQuestion()
+POST 	/crud/questions/			  controllers.Questions.save()
+
+# Rules
+GET 	/crud/rules/				  controllers.Rules.addRule()
+POST 	/crud/rules/			 	  controllers.Rules.save()	
+
+# Topics
+GET 	/crud/topics/				  controllers.Topics.addTopic()
+POST 	/crud/topics/			 	  controllers.Topics.save()
 
 # About
-GET		/about/										 controllers.Application.about()
+GET		/about/					  	  controllers.Application.about()
 
 

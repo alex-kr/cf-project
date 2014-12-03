@@ -14,8 +14,8 @@ public class AnswerRecord {
     public Long id;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
-    public User user;
+    @JoinColumn(name="account_id")
+    public Account account;
 
     @ManyToOne
     @JoinColumn(name="question_id")
@@ -27,7 +27,7 @@ public class AnswerRecord {
 
     public boolean correct;
 
-    public User getUser() {
-        return user;
+    public Account getAccount() {
+        return account;
     }
 }

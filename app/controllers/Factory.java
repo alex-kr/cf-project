@@ -8,7 +8,7 @@ import dao.impl.*;
  */
 public class Factory {
 
-    private static UserDAO userDAO = null;
+    private static AccountDAO accountDAO = null;
     private static ChoiceTextDAO choiceTextDAO = null;
     private static QuestionDAO questionDAO = null;
     private static ChoiceDAO choiceDAO = null;
@@ -24,11 +24,11 @@ public class Factory {
         return instance;
     }
 
-    public UserDAO getUserDAO() {
-        if (userDAO == null) {
-            userDAO = new UserDAOImpl();
+    public AccountDAO getUserDAO() {
+        if (accountDAO == null) {
+            accountDAO = new AccountDAOImpl();
         }
-        return userDAO;
+        return accountDAO;
     }
 
     public ChoiceTextDAO getChoiceTextDAO() {

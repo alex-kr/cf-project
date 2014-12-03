@@ -66,7 +66,7 @@ public class TopicDAOImpl implements TopicDAO {
         return topic;
     }
 
-    public Collection getAllTopics() throws SQLException {
+    public List<Topic> getAllTopics() throws SQLException {
         Session session = null;
         List<Topic> topics = new ArrayList<>();
         try {

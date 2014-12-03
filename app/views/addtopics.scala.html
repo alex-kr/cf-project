@@ -1,0 +1,41 @@
+@(topicList: List[models.core.Topic], topicForm: Form[models.core.Topic])
+@import helper._
+@import helper.twitterBootstrap._
+
+<!-- Include the bootstrap stylesheets -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+@main("Topic form") {
+
+<div class="container">
+
+	<div class="row">
+
+    <div class="col-xs-2"></div>
+
+	<div class="col-xs-8">
+	@helper.form(action = routes.Topics.save(), 'role ->"form", 'class -> "form-horizontal") {	
+		<div class="form-group">
+			@helper.inputText(topicForm("topicText"),
+										  '_label -> "Topic",
+        								  'class -> "form-control",
+        								  'placeholder -> "Enter topic"
+   		 	)
+    	</div>
+        
+		
+		<input type="submit" class="btn btn-primary" style="margin: 10px" value="Submit">
+	
+	}	
+
+
+	   @topics(topicList)
+	<div class="col-xs-2"></div>
+	</div>
+	</div>
+</div>
+
+	<script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
+   	<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+    <script src="http:/netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+}

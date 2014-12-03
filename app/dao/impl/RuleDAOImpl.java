@@ -66,7 +66,7 @@ public class RuleDAOImpl implements RuleDAO{
         return rule;
     }
 
-    public Collection getAllRules() throws SQLException {
+    public List<Rule> getAllRules() throws SQLException {
         Session session = null;
         List<Rule> rules = new ArrayList<>();
         try {

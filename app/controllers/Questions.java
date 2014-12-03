@@ -15,7 +15,7 @@ import dao.impl.*;
 import dao.impl.QuestionDAOImpl;
 import play.data.Form;
 import views.html.questions;
-import views.html.addform;
+import views.html.addquestions;
 import java.util.*;
 import java.util.concurrent.SynchronousQueue;
 
@@ -72,12 +72,13 @@ public class Questions extends Controller {
 			System.err.println("Smth wrong");
 		}
 		Question question = Form.form(Question.class).bindFromRequest().get();
-				return ok(addform.render(quest,questionForm,choiceTextHolderForm));
+				return ok(addquestions.render(quest,questionForm,choiceTextHolderForm));
 	}
 
 	public static Result save(){
 		Form<Question> boundQuestionForm = questionForm.bindFromRequest();
 		Question question = boundQuestionForm.get();
+		System.err.println("\n\n\n\n\n\n\n\n" + boundQuestionForm);
 		question.save();
 		String rightChoice = choiceTextHolderForm.bindFromRequest().get().rightChoice;
 		List<String> wrongChoices = choiceTextHolderForm.bindFromRequest().get().wrongChoice;
@@ -114,7 +115,7 @@ public class Questions extends Controller {
 		} catch (Exception e) {
 			System.err.println("Smth wrong");
 		}
-		return ok(addform.render(quest,questionForm,choiceTextHolderForm));
+		return ok(addquestions.render(quest,questionForm,choiceTextHolderForm));
 	}
 
 }

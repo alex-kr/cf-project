@@ -3,7 +3,7 @@ package to;
 import models.core.Choice;
 import models.core.Question;
 import models.core.Rule;
-import models.core.User;
+import models.core.Account;
 import models.core.Topic;
 
 public class Transformer {
@@ -25,8 +25,8 @@ public class Transformer {
         return cto;
     }
 
-    public static UserTO convert(User u) {
-        UserTO uto = new UserTO();
+    public static AccountTO convert(Account u) {
+        AccountTO uto = new AccountTO();
         uto.id = u.id;
         uto.fullname = u.fullname;
         uto.isAdmin = u.isAdmin;

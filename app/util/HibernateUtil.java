@@ -17,7 +17,7 @@ public class HibernateUtil {
     static {
         try {
             Configuration config = new Configuration().configure();
-            config.addAnnotatedClass(User.class);
+            config.addAnnotatedClass(Account.class);
             config.addAnnotatedClass(ChoiceText.class);
             config.addAnnotatedClass(Question.class);
             config.addAnnotatedClass(Choice.class);
