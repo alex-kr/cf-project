@@ -5,7 +5,7 @@ create sequence answer_record_seq;
 
 create table answer_record (
   id                        bigint not null default nextval ('answer_record_seq'),
-  user1_id                   bigint,
+  account_id                   bigint,
   question_id               bigint,
   choice_id                 bigint,
   correct                   boolean,
@@ -22,13 +22,13 @@ create table question (
   constraint pk_question primary key (id))
 ;
 
-create sequence user1_seq;
+create sequence account_seq;
 
-create table "user1" (
-  id                        bigint not null default nextval ('user1_seq'),
+create table "account" (
+  id                        bigint not null default nextval ('account_seq'),
   fullname                  varchar(255),
   isAdmin                   boolean,
-  constraint pk_user1 primary key (id))
+  constraint pk_account primary key (id))
 ;
 
 create sequence choice_seq;
@@ -69,8 +69,8 @@ create table topic (
 ;
 
 
-alter table answer_record add constraint fk_answer_record_user1_1 foreign key (user1_id) references "user1" (id) on delete restrict on update restrict;
-create index ix_answer_record_user1_1 on answer_record (user1_id);
+alter table answer_record add constraint fk_answer_record_account_1 foreign key (account_id) references "account" (id) on delete restrict on update restrict;
+create index ix_answer_record_account_1 on answer_record (account_id);
 alter table answer_record add constraint fk_answer_record_question_2 foreign key (question_id) references question (id) on delete restrict on update restrict;
 create index ix_answer_record_question_2 on answer_record (question_id);
 alter table answer_record add constraint fk_answer_record_choice_3 foreign key (choice_id) references choice (id) on delete restrict on update restrict;
@@ -94,7 +94,7 @@ drop table if exists answer_record;
 
 drop table if exists question;
 
-drop table if exists "user1";
+drop table if exists "account";
 
 drop table if exists choice;
 

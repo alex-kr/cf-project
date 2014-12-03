@@ -1,7 +1,7 @@
 package dao.impl;
 
-import dao.UserDAO;
-import models.core.User;
+import dao.AccountDAO;
+import models.core.Account;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -16,16 +16,16 @@ import java.util.List;
 /**
  * Created by Victor Dichko on 22.09.14.
  */
-public class UserDAOImpl implements UserDAO {
+public class AccountDAOImpl implements AccountDAO {
 
-    private static final Logger.ALogger logger = Logger.of(UserDAOImpl.class);
+    private static final Logger.ALogger logger = Logger.of(AccountDAOImpl.class);
 
-    public void addUser(User user) throws SQLException {
+    public void addAccount(Account account) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(user);
+            session.save(account);
             session.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Creation error. " + e.getMessage());
@@ -36,12 +36,12 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public void updateUser(Long id, User user) throws SQLException {
+    public void updateAccount(Long id, Account account) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.update(user);
+            session.update(account);
             session.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Insertion error. " + e.getMessage());
@@ -52,12 +52,12 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    public User getUserById(Long id) throws SQLException {
+    public Account getAccountById(Long id) throws SQLException {
         Session session = null;
-        User user = null;
+        Account account = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            user = (User) session.get(User.class, id);
+            account = (Account) session.get(Account.class, id);
         } catch (Exception e) {
             logger.error("'findById' error. " + e.getMessage());
         } finally {
@@ -65,22 +65,22 @@ public class UserDAOImpl implements UserDAO {
                 session.close();
             }
         }
-        return user;
+        return account;
     }
 
-    public User getUserByFullname(String fullname) throws SQLException {
+    public Account getAccountByFullname(String fullname) throws SQLException {
         Session session = null;
-        User user = null;
+        Account account = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             //
-            Criteria cr = session.createCriteria(User.class);
+            Criteria cr = session.createCriteria(Account.class);
             cr.add(Restrictions.eq("fullname", fullname));
             if (cr.list().isEmpty()) {
                 return null;
                 //throw new SQLException("Wrong number of user with fullname: " + fullname);
             }
-            user = (User) cr.list().get(0);
+            account = (Account) cr.list().get(0);
             //
         } catch (Exception e) {
             logger.error("'findByFullname' error. " + e.getMessage());
@@ -89,31 +89,31 @@ public class UserDAOImpl implements UserDAO {
                 session.close();
             }
         }
-        return user;
+        return account;
     }
 
-    public Collection getAllUsers() throws SQLException {
+    public Collection getAllAccounts() throws SQLException {
         Session session = null;
-        List<User> users = new ArrayList<>();
+        List<Account> accounts = new ArrayList<>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            users = session.createCriteria(User.class).list();
+            accounts = session.createCriteria(Account.class).list();
         } catch (Exception e) {
-            logger.error("'getAllUsers' error. " + e.getMessage());
+            logger.error("'getAllAccounts' error. " + e.getMessage());
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
             }
         }
-        return users;
+        return accounts;
     }
 
-    public void deleteUser(User user) throws SQLException {
+    public void deleteAccount(Account account) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            session.delete(user);
+            session.delete(account);
             session.getTransaction().commit();
         } catch (Exception e) {
             logger.error("Deleting error. " + e.getMessage());

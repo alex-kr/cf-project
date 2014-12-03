@@ -17,7 +17,7 @@ public class Application extends Controller {
 //      user.fullname = "Some User";
 //      user.isAdmin = false;
 //      try {
-//          userDAO.addUser(user);
+//          userDAO.addAccount(user);
 //      }
 //      catch (SQLException ex) {
 //          return ok("Exception occurred");
@@ -25,7 +25,7 @@ public class Application extends Controller {
 //
 //      // Getting from DB
 //      try {
-//          String firstUserName = Factory.getInstance().getUserDAO().getUserById(1L).fullname;
+//          String firstUserName = Factory.getInstance().getUserDAO().getAccountById(1L).fullname;
 //        return ok(firstUserName);
 //      }
 //      catch (SQLException ex) {

@@ -6,8 +6,8 @@ import javax.persistence.*;
  * Created by Victor Dichko on 14.09.14.
  */
 @Entity
-@Table(name = "user1")
-public class User {
+@Table(name = "account")
+public class Account {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     public Long id;
