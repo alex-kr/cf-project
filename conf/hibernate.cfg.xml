@@ -13,13 +13,13 @@
 
         <!-- Assume test is the database name -->
         <property name="hibernate.connection.url">
-            jdbc:postgresql://localhost:5433/playdb
+            postgres://mdplhslyejqhev:oenGO5OUaI66kqGiWiZSWowp9Z@ec2-54-163-248-144.compute-1.amazonaws.com:5432/d6il1pkuo0tdcv
         </property>
         <property name="hibernate.connection.username">
-            postgres
+            mdplhslyejqhev
         </property>
         <property name="hibernate.connection.password">
-            admin
+            oenGO5OUaI66kqGiWiZSWowp9Z
         </property>
         <property name="show_sql">
             true
