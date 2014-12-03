@@ -15,7 +15,7 @@
         <property name="hibernate.connection.url">
             <!-- 'jdbc:' + ${DATABASE_URL} -->
             <!-- [database type]://[username]:[password]@[host]:[port]/[database name] -->
-            jdbc:postgres://mdplhslyejqhev:oenGO5OUaI66kqGiWiZSWowp9Z@ec2-54-163-248-144.compute-1.amazonaws.com:5432/d6il1pkuo0tdcv
+            jdbc:postgresql://mdplhslyejqhev:oenGO5OUaI66kqGiWiZSWowp9Z@ec2-54-163-248-144.compute-1.amazonaws.com:5432/d6il1pkuo0tdcv
         </property>
         <property name="hibernate.connection.username">
             mdplhslyejqhev
