@@ -5,7 +5,7 @@
 @import helper.twitterBootstrap._
 
 <!-- Include the bootstrap stylesheets -->
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
 
 @main("Question form") {
 
@@ -80,5 +80,5 @@
 
 	<script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
    	<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
-    <script src="http:/netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="@routes.Assets.at("stylesheets/bootstrap.min.js")"></script>
 }
