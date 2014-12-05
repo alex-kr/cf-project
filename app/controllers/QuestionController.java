@@ -1,5 +1,6 @@
 package controllers;
 
+import algorithm.CollaborativeFiltering;
 import algorithm.QuestionSelector;
 import models.core.*;
 import play.Logger;
@@ -37,8 +38,8 @@ public class QuestionController extends Controller {
             account.fullname = session("fullname");
             question = QuestionSelector.getRandom();
         } else {
-            //question = CollaborativeFiltering.getNextQuestion(user);
-            question = QuestionSelector.getRandom();
+            question = CollaborativeFiltering.getNextQuestion(account);
+            //question = QuestionSelector.getRandom();
         }
         QuestionTO qto = convert(question);
         AccountTO uto = convert(account);
