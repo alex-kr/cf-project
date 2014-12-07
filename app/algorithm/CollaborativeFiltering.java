@@ -2,6 +2,7 @@ package algorithm;
 
 import controllers.Factory;
 import models.core.*;
+import org.hibernate.Session;
 import play.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
@@ -22,8 +23,11 @@ public class CollaborativeFiltering {
     private static double progress;
     private static double maxProgress = 0.8;
     private static boolean allAnswers = false;
+    private static Session session;
+    private static Map<Long,List<Integer>> progressByTopic;
 
     public static Question getNextQuestion(User user){
+        session = HibernateUtil.getSessionFactory().openSession();
         List<AnswerRecord> answerRecords;
         try{
             answerRecords = (ArrayList) Factory.getInstance().getAnswerRecordDAO().getAllAnswerRecords();
@@ -121,6 +125,7 @@ public class CollaborativeFiltering {
         }
         System.out.print("id " + id + allAnswers + " " + max);
 
+        session.close();
         //TODO check if id is still 0L
 //        System.out.println(measureSum);
         try {
@@ -134,11 +139,11 @@ public class CollaborativeFiltering {
     private static  Map<Long,Map<Long,Double>> getChoicesRating(List<AnswerRecord> answerRecords){
 
         //get all question and user Ids
-        List<Long> questionIds = HibernateUtil.getSessionFactory().openSession()
+        List<Long> questionIds = session
                 .createCriteria(Question.class)
                 .setProjection(Projections.property("id"))
                 .list();
-        List<Long> userIds = HibernateUtil.getSessionFactory().openSession()
+        List<Long> userIds = session
                 .createCriteria(User.class)
                 .setProjection(Projections.property("id"))
                 .list();
@@ -190,6 +195,7 @@ public class CollaborativeFiltering {
         int counterCorrect = 0;
         Long currentLevel = 10L;      //max level
         int i = answerRecords.size()-1;
+        progressByTopic = new HashMap<>();
         level = 1L;
         boolean ok = false;
         do{
@@ -202,21 +208,26 @@ public class CollaborativeFiltering {
             i--;
         }while ((i >= 0) &&(!ok));
 
+        getQuestionCountByTopic(level);
+
         i++;
 
         if(i > 0)
             do{
                 if(answerRecords.get(i).getUser().id.equals(user.id)){
                     currentLevel = answerRecords.get(i).question.level;
-                    System.out.println("id" + answerRecords.get(i).question.id + currentLevel.equals(level) + (answerRecords.get(i).correct));
+//                    System.out.println("id" + answerRecords.get(i).question.id + currentLevel.equals(level) + (answerRecords.get(i).correct));
                     if(currentLevel.equals(level) && (answerRecords.get(i).correct)){
                         counterCorrect++;
+                        List<Integer> values = progressByTopic.get(answerRecords.get(i).question.rule.topic.id);
+                        values.set(0,values.get(0) + 1);
+                        progressByTopic.put(answerRecords.get(i).question.rule.topic.id,values);
                     }
                 }
                 i--;
             }while ((i >= 0) && (currentLevel >= level));
-System.out.println(counterCorrect);
-        counter = getQuestionCount(level);
+//        System.out.println(counterCorrect);
+        counter = getQuestionCount();//level);
 
         if(counter > 0)
             progress = (double)counterCorrect / (double)counter;
@@ -227,28 +238,62 @@ System.out.println(counterCorrect);
             level++;
             allAnswers = false;
             progress = 0.0;
+            getQuestionCountByTopic(level);
         }
         System.out.println(progress);
         System.out.println(level);
     }
 
-    private static int getQuestionCount(Long level){
-        List<Long> questionIds = HibernateUtil.getSessionFactory().openSession()
+    private static int getQuestionCount(){//Long level){
+//        List<Long> questionIds = session
+//                .createCriteria(Question.class)
+//                .setProjection(Projections.property("id"))
+//                .list();
+
+        int count = 0;
+//        for(Long id : questionIds){
+//            try {
+//                if(Factory.getInstance().getQuestionDAO().getQuestionById(id).level.equals(level))
+//                    count++;
+//            }catch (SQLException ex) {
+//                logger.error("Error occurred when getting question: " + ex.getMessage());
+//                return 0;
+//            }
+//        }
+        for(Map.Entry<Long,List<Integer>> entry: progressByTopic.entrySet()){
+            count += entry.getValue().get(1);
+        }
+        System.out.println(count);
+        return count;
+    }
+
+    private static void getQuestionCountByTopic(Long level){
+        progressByTopic.clear();
+        progressByTopic = new HashMap<>();
+        List<Long> questionIds = session
                 .createCriteria(Question.class)
                 .setProjection(Projections.property("id"))
                 .list();
 
-        int count = 0;
-        for(Long id : questionIds){
+        for(Long id: questionIds){
             try {
-                if(Factory.getInstance().getQuestionDAO().getQuestionById(id).level.equals(level))
-                    count++;
+                Question question = Factory.getInstance().getQuestionDAO().getQuestionById(id);
+                if(question.level.equals(level)){
+                    if(!progressByTopic.containsKey(question.rule.topic.id)){
+                        List<Integer> values = new ArrayList<>();
+                        values.add(0,0);    //for correct answers
+                        values.add(1,1);    //for question quantity
+                        progressByTopic.put(question.rule.topic.id,values);
+                    }else{
+                        List<Integer> values = progressByTopic.get(question.rule.topic.id);
+                        values.set(1,values.get(1) + 1);
+                        progressByTopic.put(question.rule.topic.id,values);
+                    }
+                }
             }catch (SQLException ex) {
                 logger.error("Error occurred when getting question: " + ex.getMessage());
-                return 0;
+                return;
             }
         }
-        System.out.println(count);
-        return count;
     }
 }
