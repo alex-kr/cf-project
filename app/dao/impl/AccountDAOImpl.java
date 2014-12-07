@@ -100,13 +100,13 @@ public class AccountDAOImpl implements AccountDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             Criteria cr = session.createCriteria(AnswerRecord.class);
-            cr.add(Restrictions.eq("account_id", id))
+            cr.add(Restrictions.eq("account.id", id))
               .addOrder(Order.desc("id"));
             if (cr.list().isEmpty()) {
                 return null;
                 //throw new SQLException("Wrong number of user with fullname: " + fullname);
             }
-            accountLevel = (Long) cr.list().get(0);
+            accountLevel = ((AnswerRecord) cr.list().get(0)).question.level;
         } catch (Exception e) {
             logger.error("'getAccountLevelById' error. " + e.getMessage());
         } finally {

@@ -93,10 +93,11 @@ public class AnswerRecordDAOImpl implements AnswerRecordDAO{
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             answerRecords = session.createCriteria(AnswerRecord.class)
-                    .add(Restrictions.eq("account_id", accountId))
-                    .add(Restrictions.eq("question.level", level))
+                    .add(Restrictions.eq("account.id", accountId))
                     .add(Restrictions.eq("correct", true))
-                    .setProjection(Projections.distinct(Projections.property("question_id")))
+                    .setProjection(Projections.distinct(Projections.property("question.id")))
+                    .createCriteria("question")
+                        .add(Restrictions.eq("level", level))
                     .list();
         } catch (Exception e) {
             logger.error("'getAnswerRecordsByAccountIdAndLevel' error. " + e.getMessage());

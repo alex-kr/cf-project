@@ -129,15 +129,16 @@ public class CollaborativeFiltering {
         }
         System.out.print("id " + id + allAnswers + " " + max);
 
-        session.close();
         //TODO check if id is still 0L
 //        System.out.println(measureSum);
         try {
-            return Factory.getInstance().getQuestionDAO().getQuestionById(id);
-        }catch (SQLException ex) {
+            question = Factory.getInstance().getQuestionDAO().getQuestionById(id);
+        } catch (SQLException ex) {
             logger.error("Error occurred when getting question: " + ex.getMessage());
             return null;
         }
+        session.close();
+        return question;
     }
 
     private static  Map<Long,Map<Long,Double>> getChoicesRating(List<AnswerRecord> answerRecords){
