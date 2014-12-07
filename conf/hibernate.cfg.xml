@@ -14,7 +14,7 @@
         <!-- Assume test is the database name -->
         <property name="hibernate.connection.url">
             <!-- jdbc:postgresql://<host>:<port>/<dbname>?user=<username>&password=<password -->
-            jdbc:postgresql://ec2-54-163-248-144.compute-1.amazonaws.com:5432/d6il1pkuo0tdcv?username=mdplhslyejqhev&amp;password=oenGO5OUaI66kqGiWiZSWowp9Z&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory
+            jdbc:postgresql://54.163.248.144:5432/d6il1pkuo0tdcv?username=mdplhslyejqhev&amp;password=oenGO5OUaI66kqGiWiZSWowp9Z&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory
         </property>
         <property name="hibernate.connection.username">
             mdplhslyejqhev
