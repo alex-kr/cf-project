@@ -1,15 +1,14 @@
 package dao.impl;
 
 import dao.QuestionDAO;
-import dao.QuestionDAO;
 import models.core.Question;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import play.Logger;
 import util.HibernateUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 /**
  * Created by ilia on 24.09.14.
@@ -63,6 +62,24 @@ public class QuestionDAOImpl implements QuestionDAO{
             }
         }
         return question;
+    }
+
+    public List<Question> getQuestionsByLevel(Long level) throws SQLException {
+        Session session = null;
+        List<Question> questionsByLevel = new ArrayList<>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            questionsByLevel = session.createCriteria(Question.class)
+                    .add(Restrictions.eq("level", level))
+                    .list();
+        } catch (Exception e) {
+            logger.error("'getQuestionsByLevel' error. " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return questionsByLevel;
     }
 
     public List<Question> getAllQuestions() throws SQLException {

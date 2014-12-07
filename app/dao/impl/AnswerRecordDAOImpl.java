@@ -3,6 +3,8 @@ package dao.impl;
 import dao.AnswerRecordDAO;
 import models.core.AnswerRecord;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import play.Logger;
 import util.HibernateUtil;
 
@@ -62,6 +64,48 @@ public class AnswerRecordDAOImpl implements AnswerRecordDAO{
             }
         }
         return answerRecord;
+    }
+
+    @Override
+    public List<AnswerRecord> getAnswerRecordsByAccountIdAndLevel(Long accountId, Long level) throws SQLException {
+        Session session = null;
+        List<AnswerRecord> answerRecords = new ArrayList<>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            answerRecords = session.createCriteria(AnswerRecord.class)
+                    .add(Restrictions.eq("account_id", accountId))
+                    .add(Restrictions.eq("question.level", level))
+                    .list();
+        } catch (Exception e) {
+            logger.error("'getAnswerRecordsByAccountIdAndLevel' error. " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return answerRecords;
+    }
+
+    @Override
+    public List<AnswerRecord> getDistinctCorrectAnswersByAccountIdAndLevel(Long accountId, Long level) throws SQLException {
+        Session session = null;
+        List<AnswerRecord> answerRecords = new ArrayList<>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            answerRecords = session.createCriteria(AnswerRecord.class)
+                    .add(Restrictions.eq("account_id", accountId))
+                    .add(Restrictions.eq("question.level", level))
+                    .add(Restrictions.eq("correct", true))
+                    .setProjection(Projections.distinct(Projections.property("question_id")))
+                    .list();
+        } catch (Exception e) {
+            logger.error("'getAnswerRecordsByAccountIdAndLevel' error. " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return answerRecords;
     }
 
     public Collection getAllAnswerRecords() throws SQLException {

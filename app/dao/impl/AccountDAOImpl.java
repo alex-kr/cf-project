@@ -2,8 +2,10 @@ package dao.impl;
 
 import dao.AccountDAO;
 import models.core.Account;
+import models.core.AnswerRecord;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import play.Logger;
 import util.HibernateUtil;
@@ -90,6 +92,29 @@ public class AccountDAOImpl implements AccountDAO {
             }
         }
         return account;
+    }
+
+    public Long getAccountLevelById(Long id) throws SQLException {
+        Session session = null;
+        Long accountLevel = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Criteria cr = session.createCriteria(AnswerRecord.class);
+            cr.add(Restrictions.eq("account_id", id))
+              .addOrder(Order.desc("id"));
+            if (cr.list().isEmpty()) {
+                return null;
+                //throw new SQLException("Wrong number of user with fullname: " + fullname);
+            }
+            accountLevel = (Long) cr.list().get(0);
+        } catch (Exception e) {
+            logger.error("'getAccountLevelById' error. " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return accountLevel;
     }
 
     public Collection getAllAccounts() throws SQLException {

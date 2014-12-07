@@ -1,9 +1,12 @@
 package controllers;
 
 import algorithm.QuestionSelector;
+import models.core.Account;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.about;
+
+import java.sql.SQLException;
 
 public class Application extends Controller {
 
@@ -31,6 +34,23 @@ public class Application extends Controller {
 //      catch (SQLException ex) {
 //          return ok("Exception occurred");
 //      }
+//********************** This content has been added recently *************************
+      if (session("fullname") != null) {
+          Account account = null;
+          String output = null;
+          try {
+              account = Factory.getInstance().getUserDAO().getAccountByFullname(session("fullname"));
+              Long level = account.getAccountLevel();
+              Double progress = account.getLevelProgress();
+              output = "Account: " + account.fullname + "\n"
+                      + "Account level: " + level.toString() + "\n"
+                      + "Account progress: " + progress.toString();
+              return ok(output);
+          } catch (SQLException ex) {
+              ex.printStackTrace();
+          }
+      }
+//*************************** The end for added code **********************************
       return ok(QuestionSelector.getRandom().questionText);
 //      return TODO;
   }

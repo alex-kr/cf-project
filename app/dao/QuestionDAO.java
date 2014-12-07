@@ -12,6 +12,7 @@ public interface QuestionDAO {
     public void addQuestion(Question question) throws SQLException;
     public void updateQuestion (Long id, Question question) throws SQLException;
     public Question getQuestionById(Long id) throws SQLException;
+    public List<Question> getQuestionsByLevel(Long level) throws SQLException;
     public List<Question> getAllQuestions() throws SQLException;
     public void deleteQuestion(Question question) throws SQLException;
 }
