@@ -1,53 +1,47 @@
 @(title: String)(content: Html)
 
 <html>
-    <head>
-        <title>Skills Checker</title>
-        <!-- Include the bootstrap stylesheets -->
-        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body style="height: 100%; margin: 0; padding: 0">
-        <div class="wrapper" style="min-height:100%; position:relative;">
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<head>
+    <title>Skills Checker</title>
+    <!-- Include the bootstrap stylesheets -->
+    <link href="http://djkpi.com.ua/pr/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+    <link href="/wp-content/themes/clear-theme/styles/bootstrap-responsive.css" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
-            <div class="container">
-                <h3 class="pull-left" style="color: #F3E2F6;">@title</h3>
+        <div class="container">
+            <h3 class="pull-left" style="padding:0 0 0 20px;">@title</h3>
 
-                <div class="nav">
-                        <ul class="nav nav-tabs pull-right">
-                            <li><a href="/questions">Test</a></li>
-                            <li><a href="/crud/questions/">Add question</a></li>
-                            <li><a href="/crud/rules/">Add rule</a></li>
-                            <li><a href="/crud/topics/">Add topic</a></li>
-                            <li><a href="#about">About</a></li>
-                        </ul>
-                </div> 
+            <div class="nav">
+                <ul class="nav nav-tabs pull-right">
+                    <li><a href="/questions">Test</a></li>
+                    <li><a href="/crud/questions/">Add question</a></li>
+                    <li><a href="/crud/rules/">Add rule</a></li>
+                    <li><a href="/crud/topics/">Add topic</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
             </div>
-        </nav> 
-
-        <div style="margin-top: 60px">
-            @content
         </div>
+    </div>
+    <div style="margin-top: 60px">
+        @content
+    </div>
 
-        <footer style="margin: 100px 0 0;
-                       border-top: 3px;
-                       background: #222;
-                       color: #fff;
-                       text-align: center;
-                       width:100%;
-                       height:80px;
-                       position:absolute;
-                       bottom:0;
-                       left:0;"
-                       >
-            <div class="center">
-                <a href="#">Skills Checker 2014(c)</a>
-            </div>
-        <footer>
+    <footer>
+        <div class="center">
+            <a href="#">Skills Checker 2014(c)</a>
         </div>
-        <script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
-        <!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
-        <script src="http:/netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    </body>
+        </footer>
+            <script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
+            <!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
+            <script src="http://djkpi.com.ua/pr/js/bootstrap.min.js"></script>
+</body>
 </html>
 
