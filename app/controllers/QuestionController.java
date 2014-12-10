@@ -23,6 +23,7 @@ public class QuestionController extends Controller {
     private static final Logger.ALogger logger = Logger.of(QuestionController.class);
 
     private static long seed;
+    private static int counter = 0;
 
     public static Result showQuestion() {
         Account account = new Account();
@@ -36,9 +37,19 @@ public class QuestionController extends Controller {
             account = new Account();
             account.id = 0L;
             account.fullname = session("fullname");
+            System.out.println("Random");
             question = QuestionSelector.getRandom();
+            counter++;
         } else {
-            question = CollaborativeFiltering.getNextQuestion(account);
+            if(((counter > 0) && (counter < 5)) || (account.getAccountLevel() == null) || ((account.getAccountLevel() == 1L) && (account.getLevelProgress() < 0.0001))){
+                counter++;
+                System.out.println("Random");
+                question = QuestionSelector.getRandom();
+            }else{
+                counter = 0;
+                System.out.println("Collaborative");
+                question = CollaborativeFiltering.getNextQuestion(account);
+            }
             //question = QuestionSelector.getRandom();
         }
         QuestionTO qto = convert(question);

@@ -40,7 +40,16 @@ public class CollaborativeFiltering {
             return null;
         }
 
-        getCurrentProgress(account,answerRecords);
+//        getCurrentProgress(account,answerRecords);
+        level = account.getAccountLevel();
+        if(level == null) level = 1L;
+        progress = account.getLevelProgress();
+        if(progress >= maxProgress){
+            level++;
+            allAnswers = false;
+            progress = 0.0;
+        }
+
         //userId->(questionId->rating))
         Map<Long,Map<Long,Double>> userChoices = getChoicesRating(answerRecords);
 
@@ -194,70 +203,70 @@ public class CollaborativeFiltering {
         return false;
     }
 
-    private static void getCurrentProgress(Account user, List<AnswerRecord> answerRecords){
-        int counter = 0;
-        int counterCorrect = 0;
-        Long currentLevel = 10L;      //max level
-        int i = answerRecords.size()-1;
-        level = 1L;
-        boolean ok = false;
-        do{
-            if(answerRecords.get(i).getAccount().id.equals(user.id)){
-                level = answerRecords.get(i).question.level;
-                rule = answerRecords.get(i).question.rule;
-                ok = true;
-                System.out.println("id" + answerRecords.get(i).question.id);
-            }
-            i--;
-        }while ((i >= 0) &&(!ok));
+//    private static void getCurrentProgress(Account user, List<AnswerRecord> answerRecords){
+//        int counter = 0;
+//        int counterCorrect = 0;
+//        Long currentLevel = 10L;      //max level
+//        int i = answerRecords.size()-1;
+//        level = 1L;
+//        boolean ok = false;
+//        do{
+//            if(answerRecords.get(i).getAccount().id.equals(user.id)){
+//                level = answerRecords.get(i).question.level;
+//                rule = answerRecords.get(i).question.rule;
+//                ok = true;
+//                System.out.println("id" + answerRecords.get(i).question.id);
+//            }
+//            i--;
+//        }while ((i >= 0) &&(!ok));
+//
+//        i++;
+//
+//        if(i > 0)
+//            do{
+//                if(answerRecords.get(i).getAccount().id.equals(user.id)){
+//                    currentLevel = answerRecords.get(i).question.level;
+//                    System.out.println("id" + answerRecords.get(i).question.id + currentLevel.equals(level) + (answerRecords.get(i).correct));
+//                    if(currentLevel.equals(level) && (answerRecords.get(i).correct)){
+//                        counterCorrect++;
+//                    }
+//                }
+//                i--;
+//            }while ((i >= 0) && (currentLevel >= level));
+//        System.out.println(counterCorrect);
+//        counter = getQuestionCount(level);
+//
+//        if(counter > 0)
+//            progress = (double)counterCorrect / (double)counter;
+//        else
+//            progress = 0.0; //there are no questions?
+//
+//        if(progress >= maxProgress){
+//            level++;
+//            allAnswers = false;
+//            progress = 0.0;
+//        }
+//        System.out.println(progress);
+//        System.out.println(level);
+//    }
 
-        i++;
-
-        if(i > 0)
-            do{
-                if(answerRecords.get(i).getAccount().id.equals(user.id)){
-                    currentLevel = answerRecords.get(i).question.level;
-                    System.out.println("id" + answerRecords.get(i).question.id + currentLevel.equals(level) + (answerRecords.get(i).correct));
-                    if(currentLevel.equals(level) && (answerRecords.get(i).correct)){
-                        counterCorrect++;
-                    }
-                }
-                i--;
-            }while ((i >= 0) && (currentLevel >= level));
-        System.out.println(counterCorrect);
-        counter = getQuestionCount(level);
-
-        if(counter > 0)
-            progress = (double)counterCorrect / (double)counter;
-        else
-            progress = 0.0; //there are no questions?
-
-        if(progress >= maxProgress){
-            level++;
-            allAnswers = false;
-            progress = 0.0;
-        }
-        System.out.println(progress);
-        System.out.println(level);
-    }
-
-    private static int getQuestionCount(Long level){
-        List<Long> questionIds = session
-                .createCriteria(Question.class)
-                .setProjection(Projections.property("id"))
-                .list();
-
-        int count = 0;
-        for(Long id : questionIds){
-            try {
-                if(Factory.getInstance().getQuestionDAO().getQuestionById(id).level.equals(level))
-                    count++;
-            }catch (SQLException ex) {
-                logger.error("Error occurred when getting question: " + ex.getMessage());
-                return 0;
-            }
-        }
-        System.out.println(count);
-        return count;
-    }
+//    private static int getQuestionCount(Long level){
+//        List<Long> questionIds = session
+//                .createCriteria(Question.class)
+//                .setProjection(Projections.property("id"))
+//                .list();
+//
+//        int count = 0;
+//        for(Long id : questionIds){
+//            try {
+//                if(Factory.getInstance().getQuestionDAO().getQuestionById(id).level.equals(level))
+//                    count++;
+//            }catch (SQLException ex) {
+//                logger.error("Error occurred when getting question: " + ex.getMessage());
+//                return 0;
+//            }
+//        }
+//        System.out.println(count);
+//        return count;
+//    }
 }
