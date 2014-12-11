@@ -1,0 +1,11 @@
+@(uto: to.AccountTO)
+
+@main("Login") {
+    <div>
+        <form name="input" action="/login" method="POST" >
+            User: <input type="text" name="fullname" value="@{uto.fullname}">
+                <input type="hidden" name="accountId" value="@uto.id">
+            <button>LogIn</button>
+        </form>
+    </div>
+}

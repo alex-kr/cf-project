@@ -32,15 +32,20 @@ public class QuestionController extends Controller {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Question question;
         if (account == null) {
-            account = new Account();
-            account.id = 0L;
-            account.fullname = session("fullname");
-            System.out.println("Random");
-            question = QuestionSelector.getRandom();
-            counter++;
-        } else {
+            logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            logger.debug("User is null");
+        }
+        Question question;
+//        if (account == null) {
+//
+//            account = new Account();
+//            account.id = 0L;
+//            account.fullname = session("fullname");
+//            System.out.println("Random");
+//            question = QuestionSelector.getRandom();
+//            counter++;
+//        } else {
             if(((counter > 0) && (counter < 5)) || (account.getAccountLevel() == null) || ((account.getAccountLevel() == 1L) && (account.getLevelProgress() < 0.0001))){
                 counter++;
                 System.out.println("Random");
@@ -51,7 +56,7 @@ public class QuestionController extends Controller {
                 question = CollaborativeFiltering.getNextQuestion(account);
             }
             //question = QuestionSelector.getRandom();
-        }
+//        }
         QuestionTO qto = convert(question);
         AccountTO uto = convert(account);
         List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
@@ -73,12 +78,13 @@ public class QuestionController extends Controller {
         // Getting data from request
         Http.Request r = request();
         Map<String, String[]> body = r.body().asFormUrlEncoded();
-        String fullname = body.get("fullname")[0];
+        //String fullname = body.get("fullname")[0];
+        String fullname = session("fullname");
         Long qid = Long.parseLong(body.get("questionId")[0]);
         Long choiceId = Long.parseLong(body.get("answer")[0]);
 
         // Persisting data
-        session("fullname", fullname);
+//        session("fullname", fullname);
         AnswerRecord answerRecord = new AnswerRecord();
         Account account = new Account();
         Question question = new Question();
@@ -91,17 +97,18 @@ public class QuestionController extends Controller {
             e.printStackTrace();
         }
 
+
             // Creating user if doesn't exist
-        if (account == null) {
-            account = new Account();
-            account.fullname = fullname;
-            account.isAdmin = false;
-        try {
-            Factory.getInstance().getUserDAO().addAccount(account);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//        if (account == null) {
+//            account = new Account();
+//            account.fullname = fullname;
+//            account.isAdmin = false;
+//        try {
+//            Factory.getInstance().getUserDAO().addAccount(account);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
             // Saving data to DB
         answerRecord.account = account;
         answerRecord.question = question;
@@ -137,5 +144,42 @@ public class QuestionController extends Controller {
         }
         RuleTO rto = convert(rule);
         return ok(views.html.core.oneresult.render(qto, cto, ctolist, rto));
+    }
+
+    public static Result showLogin() {
+        AccountTO accountTO = new AccountTO();
+        accountTO.fullname = session("fullname");
+        accountTO.id = 0L;
+        accountTO.isAdmin = false;
+        return ok(views.html.login.login.render(accountTO));
+    }
+
+    public static Result submitlogin() {
+        // Getting data from request
+        Http.Request r = request();
+        Map<String, String[]> body = r.body().asFormUrlEncoded();
+        String fullname = body.get("fullname")[0];
+
+        // Retrieving account from DB
+        session("fullname", fullname);
+        Account account = new Account();
+        try {
+            account = Factory.getInstance().getUserDAO().getAccountByFullname(fullname);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Creating account if doesn't exist
+        if (account == null) {
+            account = new Account();
+            account.fullname = fullname;
+            account.isAdmin = false;
+            try {
+                Factory.getInstance().getUserDAO().addAccount(account);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return showQuestion();
     }
 }

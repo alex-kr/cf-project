@@ -19,11 +19,15 @@ POST 	/crud/questions/			  controllers.Questions.save()
 
 # Rules
 GET 	/crud/rules/				  controllers.Rules.addRule()
-POST 	/crud/rules/			 	  controllers.Rules.save()	
+POST 	/crud/rules/			 	  controllers.Rules.save()
 
 # Topics
 GET 	/crud/topics/				  controllers.Topics.addTopic()
 POST 	/crud/topics/			 	  controllers.Topics.save()
+
+# Login
+GET     /login                        controllers.QuestionController.showLogin()
+POST    /login                        controllers.QuestionController.submitlogin()
 
 # About
 GET		/about/					  	  controllers.Application.about()
