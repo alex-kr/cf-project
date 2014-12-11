@@ -1,8 +1,13 @@
 @(qto: to.QuestionTO, uto: to.UserTO, ctolist: List[to.ChoiceTO])
 
 @main("Test") {
-    <div class="main">
-        <form name="input" action="/questions" method="POST" >
+    <div class="row">
+        <div class="col-xs-5"></div>
+        <div class="col-xs-2">
+
+
+
+<form name="input" action="/questions" method="POST" >
             User: <input type="text" name="fullname" value="@{uto.fullname}">
             <h2> @qto.text </h2>
             <div style="padding-left: 40px; padding-bottom: 10px;">
@@ -16,6 +21,9 @@
         </form>
     </div>
 
+
+<div class="col-xs-5"></div>
+</div>
 
 
 

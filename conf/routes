@@ -27,5 +27,5 @@ POST 	/crud/topics/			 	  controllers.Topics.save()
 
 # About
 GET		/about/					  	  controllers.Application.about()
-
-
+GET		/home/					  	  controllers.Application.home()
+GET		/login/					  	  controllers.Application.login()

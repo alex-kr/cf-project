@@ -1,7 +1,8 @@
 @(qto: to.QuestionTO, cto: to.ChoiceTO, ctolist: List[to.ChoiceTO], rto: to.RuleTO)
 
 @main("Test") {
-    <div class="main">
+    <div class="row">
+
         <h2> Your answer: <span class=@if(cto.correct){"green"} else {"red"}> @cto.text </span></h2>
         <h2> @qto.text </h2>
         <form name="input" action="/questions" method="GET" >

@@ -40,6 +40,10 @@ public class Application extends Controller {
       return ok(about.render());
   }
 
-
-
+    public static Result home() {
+        return ok(views.html.home.render());
+    }
+    public static Result login() {
+        return ok(views.html.login.render());
+    }
 }
