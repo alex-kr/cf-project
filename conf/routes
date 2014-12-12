@@ -28,4 +28,8 @@ POST 	/crud/topics/			 	  controllers.Topics.save()
 # About
 GET		/about/					  	  controllers.Application.about()
 GET		/home/					  	  controllers.Application.home()
-GET		/login/					  	  controllers.Application.login()
+
+
+# Login
+GET     /login                        controllers.QuestionController.showLogin()
+POST    /login                        controllers.QuestionController.submitlogin()

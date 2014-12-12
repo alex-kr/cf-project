@@ -43,7 +43,5 @@ public class Application extends Controller {
     public static Result home() {
         return ok(views.html.home.render());
     }
-    public static Result login() {
-        return ok(views.html.login.render());
-    }
+
 }

@@ -1,14 +1,11 @@
-@import helper._
+@(uto: to.UserTO)
 
 @main("Login") {
-<div class="container">
-    <h1>Skills checker</h1>
-    <div class="row">
-        <div class="col-xs-4">
-        </div>
-        <div class="col-xs-8">
-        </div>
-    </div>
+<div>
+    <form name="input" action="/login" method="POST" >
+        User: <input type="text" name="fullname" value="@{uto.fullname}">
+        <input type="hidden" name="accountId" value="@uto.id">
+        <button>LogIn</button>
+    </form>
 </div>
-
 }

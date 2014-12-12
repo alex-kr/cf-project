@@ -24,24 +24,24 @@ public class QuestionController extends Controller {
     private static long seed;
 
     public static Result showQuestion() {
-        User user = new User();
+        User User = new User();
         try {
-            user = Factory.getInstance().getUserDAO().getUserByFullname(session("fullname"));
+            User = Factory.getInstance().getUserDAO().getUserByFullname(session("fullname"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
         Question question;
-        if (user == null) {
-            user = new User();
-            user.id = 0L;
-            user.fullname = session("fullname");
+        if (User == null) {
+            User = new User();
+            User.id = 0L;
+            User.fullname = session("fullname");
             question = QuestionSelector.getRandom();
         } else {
-            //question = CollaborativeFiltering.getNextQuestion(user);
+            //question = CollaborativeFiltering.getNextQuestion(User);
             question = QuestionSelector.getRandom();
         }
         QuestionTO qto = convert(question);
-        UserTO uto = convert(user);
+        UserTO uto = convert(User);
         List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
         List<Choice> clist = null;
         try {
@@ -61,37 +61,37 @@ public class QuestionController extends Controller {
         // Getting data from request
         Http.Request r = request();
         Map<String, String[]> body = r.body().asFormUrlEncoded();
-        String fullname = body.get("fullname")[0];
+        //String fullname = body.get("fullname")[0];
         Long qid = Long.parseLong(body.get("questionId")[0]);
         Long choiceId = Long.parseLong(body.get("answer")[0]);
 
         // Persisting data
-        session("fullname", fullname);
+        //  session("fullname", fullname);
         AnswerRecord answerRecord = new AnswerRecord();
-        User user = new User();
+        User User = new User();
         Question question = new Question();
         Choice choice = new Choice();
         try {
-            user = Factory.getInstance().getUserDAO().getUserByFullname(fullname);
+            User = Factory.getInstance().getUserDAO().getUserByFullname(fullname);
             question = Factory.getInstance().getQuestionDAO().getQuestionById(qid);
             choice = Factory.getInstance().getChoiceDAO().getChoiceById(choiceId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-            // Creating user if doesn't exist
-        if (user == null) {
-            user = new User();
-            user.fullname = fullname;
-            user.isAdmin = false;
-        try {
-            Factory.getInstance().getUserDAO().addUser(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-            // Saving data to DB
-        answerRecord.user = user;
+        // Creating User if doesn't exist
+        // if (User == null) {
+        //   User = new User();
+//            User.fullname = fullname;
+        // User.isAdmin = false;
+        //try {
+        //   Factory.getInstance().getUserDAO().addUser(User);
+        //} catch (SQLException e) {
+        //   e.printStackTrace();
+        // }
+        // }
+        // Saving data to DB
+        answerRecord.user = User;
         answerRecord.question = question;
         answerRecord.choice = choice;
         answerRecord.correct = choice.correct;
@@ -126,4 +126,42 @@ public class QuestionController extends Controller {
         RuleTO rto = convert(rule);
         return ok(views.html.core.oneresult.render(qto, cto, ctolist, rto));
     }
+
+    public static Result showLogin() {
+        UserTO UserTO = new UserTO();
+        UserTO.fullname = session("fullname");
+        UserTO.id = 0L;
+        UserTO.isAdmin = false;
+        return ok(views.html.login.render(UserTO));
+    }
+
+    public static Result submitlogin() {
+        // Getting data from request
+        Http.Request r = request();
+        Map<String, String[]> body = r.body().asFormUrlEncoded();
+        String fullname = body.get("fullname")[0];
+
+        // Retrieving User from DB
+        session("fullname", fullname);
+        User User = new User();
+        try {
+            User = Factory.getInstance().getUserDAO().getUserByFullname(fullname);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Creating User if doesn't exist
+        if (User == null) {
+            User = new User();
+            User.fullname = fullname;
+            User.isAdmin = false;
+            try {
+                Factory.getInstance().getUserDAO().addUser(User);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return showQuestion();
+    }
+
 }
