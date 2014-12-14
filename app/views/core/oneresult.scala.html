@@ -16,12 +16,12 @@
 <ab>
     <div class="row">
         <h2> Your answer: <span class=@if(cto.correct){"green"} else {"red"}> @cto.text </span></h2>
-        <h1> It is @cto.correct </h1>
+        <h2> It is @cto.correct </h2>
         <h2> @qto.text </h2>
 
         <form name="input" action="/questions" method="GET" >
 
-            <div style="padding-bottom: 10px;">
+            <div>
                 @for(choice <- ctolist) {
                     <label> <b><span class=@if(choice.correct){+} else {"red"}>  @choice.text</span> </b>
                     </label>
@@ -30,7 +30,7 @@
             </div>
 
                 <h2>@rto.ruleText</h2>
-            </form></br>
+            </br>
             <button class="btn">Next</button>
         </form>
 </div></ab>
