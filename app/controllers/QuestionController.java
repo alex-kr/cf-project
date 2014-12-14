@@ -84,7 +84,7 @@ public class QuestionController extends Controller {
         Question question = new Question();
         Choice choice = new Choice();
         try {
-            account = Factory.getInstance().getUserDAO().getAccountByFullname(fullname);
+            account = Factory.getInstance().getUserDAO().getAccountByFullname(session("fullname"));
             question = Factory.getInstance().getQuestionDAO().getQuestionById(qid);
             choice = Factory.getInstance().getChoiceDAO().getChoiceById(choiceId);
         } catch (SQLException e) {
