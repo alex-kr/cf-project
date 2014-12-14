@@ -1,24 +1,39 @@
 @(qto: to.QuestionTO, cto: to.ChoiceTO, ctolist: List[to.ChoiceTO], rto: to.RuleTO)
 
 @main("Test") {
-    <div class="row">
 
+<style type="text/css">
+    ab {
+        /*font-family: HelveticaNeneCyr-light;
+         src: url(http://circus2014.com.ua/projectx/fonts/HelveticaNeueCyr-Light.otf)*/
+        font-size: 12pt; /* Размер текста */
+        font-family: 'Open Sans Condensed', sans-serif;
+        text-align: center;
+    }
+</style>
+
+
+<ab>
+    <div class="row">
         <h2> Your answer: <span class=@if(cto.correct){"green"} else {"red"}> @cto.text </span></h2>
+        <h1> It is @cto.correct </h1>
         <h2> @qto.text </h2>
+
         <form name="input" action="/questions" method="GET" >
-            <div style="padding-left: 40px; padding-bottom: 10px;">
+
+            <div style="padding-bottom: 10px;">
                 @for(choice <- ctolist) {
-                    <label> <b><span class=@if(choice.correct){"green"} else {"red"}>  @choice.text</span> </b>
+                    <label> <b><span class=@if(choice.correct){+} else {"red"}>  @choice.text</span> </b>
                     </label>
-                    <br />
+</br>
                 }
             </div>
-            <div>
-                @rto.ruleText
-            </div>
-            <button class="button-xlarge pure-button">Next</button>
+
+                <h2>@rto.ruleText</h2>
+            </form></br>
+            <button class="btn">Next</button>
         </form>
-    </div>
+</div></ab>
 
 
 
