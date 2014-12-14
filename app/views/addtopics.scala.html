@@ -3,12 +3,20 @@
 @import helper.twitterBootstrap._
 
 <!-- Include the bootstrap stylesheets -->
-<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+<link href="http://circus2014.com.ua/projectx/css/bootstrap.css" rel="stylesheet">
 
 @main("Topic form") {
+<style type="text/css">
+	ab {
+		/*font-family: HelveticaNeneCyr-light;
+		 src: url(http://circus2014.com.ua/projectx/fonts/HelveticaNeueCyr-Light.otf)*/
+		font-family: 'Open Sans Condensed', sans-serif;
+		font-size: 12pt; /* Размер текста */
 
+	}
+</style>
 <div class="container">
-
+<ab>
 	<div class="row">
 
     <div class="col-xs-2"></div>
@@ -24,7 +32,7 @@
     	</div>
         
 		
-		<input type="submit" class="btn btn-primary" style="margin: 10px" value="Submit">
+		<Button type="submit" class="btn btn-block" style="margin: 10px" >Submit</Button>
 	
 	}	
 
@@ -33,9 +41,10 @@
 	<div class="col-xs-2"></div>
 	</div>
 	</div>
+</ab>
 </div>
 
 	<script src="http:/code.jquery.com/jquery-1.7.2.min.js"></script>
    	<!-- Optional: Incorporate the Bootstrap JavaScript plugins -->
-    <script src="@routes.Assets.at("stylesheets/bootstrap.min.js")"></script>
+    <script src="http://circus2014.com.ua/projectx/js/bootstrap.js"></script>
 }

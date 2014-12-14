@@ -1,0 +1,25 @@
+@(uto: to.UserTO)
+
+@main("Login") {
+
+<style type="text/css">
+    ab {
+        /*font-family: HelveticaNeneCyr-light;
+         src: url(http://circus2014.com.ua/projectx/fonts/HelveticaNeueCyr-Light.otf)*/
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-size: 12pt; /* Размер текста */
+text-align: center;
+    }
+</style>
+        <ab>
+<div class="row">
+    </br></br></br></br></br></br>
+    <form name="input" action="/login" method="POST" >
+        User:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" placeholder="Введите логин…" name="fullname" value="@{uto.fullname}">
+        <input type="hidden" name="accountId" value="@uto.id">
+</br></br></br>
+        <button class="btn" id="setButton">LogIn</button>
+    </form>
+</div>
+
+        </ab>}
