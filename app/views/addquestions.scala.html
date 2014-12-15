@@ -36,14 +36,14 @@
     	</div>
         <div class="form-group">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-2">
                 @inputRadioGroup(
                     questionForm("level"),
                     options = options("1" -> "1", "2" -> "2", "3" -> "3"),
                     '_label -> "Level"
                 )
                 </div>                
-                <div class="col-xs-6 form-group">
+                <div class="col-xs-10 form-group">
                 @select(
                     questionForm("rule.id"),
                     options = options(Rule.getMap),
