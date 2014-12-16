@@ -27,7 +27,7 @@ public class CollaborativeFiltering {
     private static boolean allAnswers = false;
     private static Session session;
 
-    public static Question getNextQuestion(Account account,Long accountLevel, double accountProgress,Topic topic){
+    public static Question getNextQuestion(Account account,Long accountLevel, double accountProgress,Long topicId){
         session = HibernateUtil.getSessionFactory().openSession();
         List<AnswerRecord> answerRecords;
         try{
@@ -112,7 +112,7 @@ public class CollaborativeFiltering {
                 logger.error("Error occurred when getting question: " + ex.getMessage());
                 return null;
             }
-            if((topic != null && question.rule.topic.id.equals(topic.id)) || topic == null)
+            if((!topicId.equals(0L) && question.rule.topic.id.equals(topicId)) || topicId.equals(0L))
                 if((result.get(questionId) >= max)  && (question.level.equals(level)) && (!userAlreadyAnswers(account,questionId,answerRecords)))  {
                     max = result.get(questionId);
                     id = questionId;
@@ -128,7 +128,7 @@ public class CollaborativeFiltering {
                     return null;
                 }
 //                System.out.println(questionId + " " + result.get(questionId)+" "+(question.level.equals(level)) +" "+ (!userAlreadyAnswers(user,questionId,answerRecords)));
-                if((topic != null && question.rule.topic.id.equals(topic.id)) || topic == null)
+                if((!topicId.equals(0L) && question.rule.topic.id.equals(topicId)) || topicId.equals(0L))
                     if((result.get(questionId) >= max) && (question.level.equals(level)) && (!userAlreadyAnswers(account,questionId,answerRecords))) {
                         max = result.get(questionId);
                         id = questionId;

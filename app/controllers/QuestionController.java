@@ -27,6 +27,8 @@ public class QuestionController extends Controller {
 
     public static Result showQuestion() {
         Account account = new Account();
+        Long topicId = 0L;
+        if (!session("topic_id").equals("")) topicId = Long.parseLong(session("topic_id"));
         try {
             account = Factory.getInstance().getUserDAO().getAccountByFullname(session("fullname"));
         } catch (SQLException e) {
@@ -50,7 +52,15 @@ public class QuestionController extends Controller {
             }else{
                 counter = 0;
                 System.out.println("Collaborative");
-                question = CollaborativeFiltering.getNextQuestion(account,level,progress);
+                question = CollaborativeFiltering.getNextQuestion(account,level,progress,topicId);
+                if(question == null){
+                    if(topicId != 0L){
+                    session().remove("topic_id");
+                    question = CollaborativeFiltering.getNextQuestion(account,level,progress,0L);
+                    }else {
+                    //TODO do something
+                    }
+                }
             }
             //question = QuestionSelector.getRandom();
         }
