@@ -1,10 +1,7 @@
 package algorithm;
 
 import controllers.Factory;
-import models.core.Account;
-import models.core.AnswerRecord;
-import models.core.Question;
-import models.core.Rule;
+import models.core.*;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import play.Logger;
@@ -30,7 +27,7 @@ public class CollaborativeFiltering {
     private static boolean allAnswers = false;
     private static Session session;
 
-    public static Question getNextQuestion(Account account){
+    public static Question getNextQuestion(Account account,Long accountLevel, double accountProgress,Long topicId){
         session = HibernateUtil.getSessionFactory().openSession();
         List<AnswerRecord> answerRecords;
         try{
@@ -41,9 +38,9 @@ public class CollaborativeFiltering {
         }
 
 //        getCurrentProgress(account,answerRecords);
-        level = account.getAccountLevel();
+        level = accountLevel;// account.getAccountLevel();
         if(level == null) level = 1L;
-        progress = account.getLevelProgress();
+        progress = accountProgress;//account.getLevelProgress();
         if(progress >= maxProgress){
             level++;
             allAnswers = false;
@@ -115,10 +112,11 @@ public class CollaborativeFiltering {
                 logger.error("Error occurred when getting question: " + ex.getMessage());
                 return null;
             }
-            if((result.get(questionId) >= max) && (question.level.equals(level)) && (!userAlreadyAnswers(account,questionId,answerRecords)))  {
-                max = result.get(questionId);
-                id = questionId;
-            }
+            if((!topicId.equals(0L) && question.rule.topic.id.equals(topicId)) || topicId.equals(0L))
+                if((result.get(questionId) >= max)  && (question.level.equals(level)) && (!userAlreadyAnswers(account,questionId,answerRecords)))  {
+                    max = result.get(questionId);
+                    id = questionId;
+                }
         }
         if(id == 0L){
             allAnswers = true;
@@ -130,15 +128,16 @@ public class CollaborativeFiltering {
                     return null;
                 }
 //                System.out.println(questionId + " " + result.get(questionId)+" "+(question.level.equals(level)) +" "+ (!userAlreadyAnswers(user,questionId,answerRecords)));
-                if((result.get(questionId) >= max) && (question.level.equals(level)) && (!userAlreadyAnswers(account,questionId,answerRecords))) {
-                    max = result.get(questionId);
-                    id = questionId;
-                }
+                if((!topicId.equals(0L) && question.rule.topic.id.equals(topicId)) || topicId.equals(0L))
+                    if((result.get(questionId) >= max) && (question.level.equals(level)) && (!userAlreadyAnswers(account,questionId,answerRecords))) {
+                        max = result.get(questionId);
+                        id = questionId;
+                    }
             }
         }
         System.out.print("id " + id + allAnswers + " " + max);
 
-        //TODO check if id is still 0L
+        if(id == 0L) return null;
 //        System.out.println(measureSum);
         try {
             question = Factory.getInstance().getQuestionDAO().getQuestionById(id);

@@ -34,21 +34,34 @@ public class QuestionController extends Controller {
             return showLogin();
         }
         Account account = new Account();
+        Long topicId = 0L;
+        if (!session("topic_id").equals("")) topicId = Long.parseLong(session("topic_id"));
         try {
             account = Factory.getInstance().getUserDAO().getAccountByFullname(fullname);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         Question question;
-        if(((counter > 0) && (counter < 5)) || (account.getAccountLevel() == null) || ((account.getAccountLevel() == 1L) && (account.getLevelProgress() < 0.0001))){
+        Long level = account.getAccountLevel();
+        double progress = account.getLevelProgress();
+        if(((counter > 0) && (counter < 5)) || (level == null) || ((level == 1L) && (progress < 0.0001))){
             counter++;
             System.out.println("Random");
             question = QuestionSelector.getRandom();
         }else{
             counter = 0;
             System.out.println("Collaborative");
-            question = CollaborativeFiltering.getNextQuestion(account);
+            question = CollaborativeFiltering.getNextQuestion(account,level,progress,topicId);
+            if(question == null){
+                if(topicId != 0L){
+                session().remove("topic_id");
+                question = CollaborativeFiltering.getNextQuestion(account,level,progress,0L);
+                }else {
+                //TODO do something
+                }
+            }
         }
+        //question = QuestionSelector.getRandom();
         QuestionTO qto = convert(question);
         AccountTO uto = convert(account);
         List<ChoiceTO> ctolist = new ArrayList<ChoiceTO>();
