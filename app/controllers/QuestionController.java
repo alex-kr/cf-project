@@ -41,14 +41,16 @@ public class QuestionController extends Controller {
             question = QuestionSelector.getRandom();
             counter++;
         } else {
-            if(((counter > 0) && (counter < 5)) || (account.getAccountLevel() == null) || ((account.getAccountLevel() == 1L) && (account.getLevelProgress() < 0.0001))){
+            Long level = account.getAccountLevel();
+            double progress = account.getLevelProgress();
+            if(((counter > 0) && (counter < 5)) || (level == null) || ((level == 1L) && (progress < 0.0001))){
                 counter++;
                 System.out.println("Random");
                 question = QuestionSelector.getRandom();
             }else{
                 counter = 0;
                 System.out.println("Collaborative");
-                question = CollaborativeFiltering.getNextQuestion(account);
+                question = CollaborativeFiltering.getNextQuestion(account,level,progress);
             }
             //question = QuestionSelector.getRandom();
         }

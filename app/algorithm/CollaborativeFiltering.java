@@ -30,7 +30,7 @@ public class CollaborativeFiltering {
     private static boolean allAnswers = false;
     private static Session session;
 
-    public static Question getNextQuestion(Account account){
+    public static Question getNextQuestion(Account account,Long accountLevel, double accountProgress){
         session = HibernateUtil.getSessionFactory().openSession();
         List<AnswerRecord> answerRecords;
         try{
@@ -41,9 +41,9 @@ public class CollaborativeFiltering {
         }
 
 //        getCurrentProgress(account,answerRecords);
-        level = account.getAccountLevel();
+        level = accountLevel;// account.getAccountLevel();
         if(level == null) level = 1L;
-        progress = account.getLevelProgress();
+        progress = accountProgress;//account.getLevelProgress();
         if(progress >= maxProgress){
             level++;
             allAnswers = false;
