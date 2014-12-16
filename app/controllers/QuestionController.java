@@ -75,36 +75,36 @@ public class QuestionController extends Controller {
         // Getting data from request
         Http.Request r = request();
         Map<String, String[]> body = r.body().asFormUrlEncoded();
-        String fullname = body.get("fullname")[0];
+        //String fullname = body.get("fullname")[0];
         Long qid = Long.parseLong(body.get("questionId")[0]);
         Long choiceId = Long.parseLong(body.get("answer")[0]);
 
         // Persisting data
-        session("fullname", fullname);
+        //  session("fullname", fullname);
         AnswerRecord answerRecord = new AnswerRecord();
         Account account = new Account();
         Question question = new Question();
         Choice choice = new Choice();
         try {
-            account = Factory.getInstance().getUserDAO().getAccountByFullname(fullname);
+            account = Factory.getInstance().getUserDAO().getAccountByFullname(session("fullname"));
             question = Factory.getInstance().getQuestionDAO().getQuestionById(qid);
             choice = Factory.getInstance().getChoiceDAO().getChoiceById(choiceId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-            // Creating user if doesn't exist
-        if (account == null) {
-            account = new Account();
-            account.fullname = fullname;
-            account.isAdmin = false;
-        try {
-            Factory.getInstance().getUserDAO().addAccount(account);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-            // Saving data to DB
+        // Creating User if doesn't exist
+        // if (User == null) {
+        //   User = new User();
+//            User.fullname = fullname;
+        // User.isAdmin = false;
+        //try {
+        //   Factory.getInstance().getUserDAO().addUser(User);
+        //} catch (SQLException e) {
+        //   e.printStackTrace();
+        // }
+        // }
+        // Saving data to DB
         answerRecord.account = account;
         answerRecord.question = question;
         answerRecord.choice = choice;
@@ -139,5 +139,42 @@ public class QuestionController extends Controller {
         }
         RuleTO rto = convert(rule);
         return ok(views.html.core.oneresult.render(qto, cto, ctolist, rto));
+    }
+
+    public static Result showLogin() {
+        AccountTO accountTO = new AccountTO();
+        accountTO.fullname = session("fullname");
+        accountTO.id = 0L;
+        accountTO.isAdmin = false;
+        return ok(views.html.login.render(accountTO));
+    }
+
+    public static Result submitlogin() {
+        // Getting data from request
+        Http.Request r = request();
+        Map<String, String[]> body = r.body().asFormUrlEncoded();
+        String fullname = body.get("fullname")[0];
+
+        // Retrieving User from DB
+        session("fullname", fullname);
+        Account account = new Account();
+        try {
+            account = Factory.getInstance().getUserDAO().getAccountByFullname(fullname);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Creating User if doesn't exist
+        if (account == null) {
+            account = new Account();
+            account.fullname = fullname;
+            account.isAdmin = false;
+            try {
+                Factory.getInstance().getUserDAO().addAccount(account);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return showQuestion();
     }
 }
