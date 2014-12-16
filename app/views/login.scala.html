@@ -1,4 +1,7 @@
-@(uto: to.AccountTO)
+@(uto: to.AccountTO, topicForm: Form[models.core.Topic])
+
+@import models.core.Topic
+@import helper._
 
 @main("Login") {
 
@@ -8,16 +11,24 @@
          src: url(http://circus2014.com.ua/projectx/fonts/HelveticaNeueCyr-Light.otf)*/
         font-family: 'Open Sans Condensed', sans-serif;
         font-size: 12pt; /* Размер текста */
-text-align: center;
+        text-align: center;
     }
 </style>
         <ab>
 <div class="row">
-    </br></br></br></br></br></br>
+    <br><br><br><br><br><br>
     <form name="input" action="/login" method="POST" >
         User:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" placeholder="Введите логин…" name="fullname" value="@{uto.fullname}">
         <input type="hidden" name="accountId" value="@uto.id">
-</br></br></br>
+        <br><br>
+        @select(
+            topicForm("id"),
+            options = options(Topic.getMap),
+            '_label -> "Topic",
+            '_default -> "-- All topics --",
+            '_showConstraints -> false
+        )
+        <br><br>
         <button class="btn" id="setButton">LogIn</button>
     </form>
 </div>

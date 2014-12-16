@@ -4,6 +4,7 @@ import algorithm.CollaborativeFiltering;
 import algorithm.QuestionSelector;
 import models.core.*;
 import play.Logger;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -22,35 +23,31 @@ public class QuestionController extends Controller {
 
     private static final Logger.ALogger logger = Logger.of(QuestionController.class);
 
+    private static Form<Topic> topicForm = Form.form(Topic.class);
+
     private static long seed;
     private static int counter = 0;
 
     public static Result showQuestion() {
+        String fullname = session("fullname");
+        if (fullname == null || fullname.isEmpty()) {
+            return showLogin();
+        }
         Account account = new Account();
         try {
-            account = Factory.getInstance().getUserDAO().getAccountByFullname(session("fullname"));
+            account = Factory.getInstance().getUserDAO().getAccountByFullname(fullname);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         Question question;
-        if (account == null) {
-            account = new Account();
-            account.id = 0L;
-            account.fullname = session("fullname");
+        if(((counter > 0) && (counter < 5)) || (account.getAccountLevel() == null) || ((account.getAccountLevel() == 1L) && (account.getLevelProgress() < 0.0001))){
+            counter++;
             System.out.println("Random");
             question = QuestionSelector.getRandom();
-            counter++;
-        } else {
-            if(((counter > 0) && (counter < 5)) || (account.getAccountLevel() == null) || ((account.getAccountLevel() == 1L) && (account.getLevelProgress() < 0.0001))){
-                counter++;
-                System.out.println("Random");
-                question = QuestionSelector.getRandom();
-            }else{
-                counter = 0;
-                System.out.println("Collaborative");
-                question = CollaborativeFiltering.getNextQuestion(account);
-            }
-            //question = QuestionSelector.getRandom();
+        }else{
+            counter = 0;
+            System.out.println("Collaborative");
+            question = CollaborativeFiltering.getNextQuestion(account);
         }
         QuestionTO qto = convert(question);
         AccountTO uto = convert(account);
@@ -73,12 +70,10 @@ public class QuestionController extends Controller {
         // Getting data from request
         Http.Request r = request();
         Map<String, String[]> body = r.body().asFormUrlEncoded();
-        //String fullname = body.get("fullname")[0];
         Long qid = Long.parseLong(body.get("questionId")[0]);
         Long choiceId = Long.parseLong(body.get("answer")[0]);
 
         // Persisting data
-        //  session("fullname", fullname);
         AnswerRecord answerRecord = new AnswerRecord();
         Account account = new Account();
         Question question = new Question();
@@ -91,17 +86,6 @@ public class QuestionController extends Controller {
             e.printStackTrace();
         }
 
-        // Creating User if doesn't exist
-        // if (User == null) {
-        //   User = new User();
-//            User.fullname = fullname;
-        // User.isAdmin = false;
-        //try {
-        //   Factory.getInstance().getUserDAO().addUser(User);
-        //} catch (SQLException e) {
-        //   e.printStackTrace();
-        // }
-        // }
         // Saving data to DB
         answerRecord.account = account;
         answerRecord.question = question;
@@ -144,7 +128,19 @@ public class QuestionController extends Controller {
         accountTO.fullname = session("fullname");
         accountTO.id = 0L;
         accountTO.isAdmin = false;
-        return ok(views.html.login.render(accountTO));
+
+        String topicId = session("topic_id");
+        if (topicId != null && !topicId.isEmpty()) {
+            try {
+                Topic topic = Factory.getInstance().getTopicDAO().getTopicById(Long.parseLong(topicId));
+                topicForm = topicForm.fill(topic);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            topicForm = topicForm.fill(new Topic());
+        }
+        return ok(views.html.login.render(accountTO, topicForm));
     }
 
     public static Result submitlogin() {
@@ -152,9 +148,15 @@ public class QuestionController extends Controller {
         Http.Request r = request();
         Map<String, String[]> body = r.body().asFormUrlEncoded();
         String fullname = body.get("fullname")[0];
+        String topic_id = body.get("id")[0];
+
+        session("topic_id", topic_id);
+        session("fullname", fullname);
+
+        logger.debug("topic_id: " + session("topic_id"));
+        logger.debug("fullname: " + session("fullname"));
 
         // Retrieving User from DB
-        session("fullname", fullname);
         Account account = new Account();
         try {
             account = Factory.getInstance().getUserDAO().getAccountByFullname(fullname);
