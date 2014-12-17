@@ -52,14 +52,9 @@ public class QuestionController extends Controller {
             counter = 0;
             System.out.println("Collaborative");
             question = CollaborativeFiltering.getNextQuestion(account,level,progress,topicId);
-            if(question == null){
-                if(topicId != 0L){
-                session().remove("topic_id");
-                question = CollaborativeFiltering.getNextQuestion(account,level,progress,0L);
-                }else {
-                //TODO do something
-                }
-            }
+        }
+        if (question == null) {
+            return finish();
         }
         //question = QuestionSelector.getRandom();
         QuestionTO qto = convert(question);
@@ -189,5 +184,9 @@ public class QuestionController extends Controller {
             }
         }
         return showQuestion();
+    }
+
+    public static Result finish() {
+        return ok(views.html.finish.render());
     }
 }

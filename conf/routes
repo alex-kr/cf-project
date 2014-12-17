@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET         /                            controllers.Application.index
+GET      /index                       controllers.Application.index
 
 # Test page
 GET      /questions                   controllers.QuestionController.showQuestion()
@@ -19,7 +19,7 @@ POST 	/crud/questions/			  controllers.Questions.save()
 
 # Rules
 GET 	/crud/rules/				  controllers.Rules.addRule()
-POST 	/crud/rules/			 	  controllers.Rules.save()	
+POST 	/crud/rules/			 	  controllers.Rules.save()
 
 # Topics
 GET 	/crud/topics/				  controllers.Topics.addTopic()
@@ -28,8 +28,11 @@ POST 	/crud/topics/			 	  controllers.Topics.save()
 # About
 GET		/about/					  	  controllers.Application.about()
 GET		/home/					  	  controllers.Application.home()
-
+GET		/    					  	  controllers.Application.home()
 
 # Login
 GET     /login                        controllers.QuestionController.showLogin()
 POST    /login                        controllers.QuestionController.submitlogin()
+
+# Finish
+GET     /finish                       controllers.QuestionController.finish()
